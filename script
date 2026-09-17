@@ -1,0 +1,436 @@
+/* ============================================================
+   QUANTA — MODE TANTANGAN
+   Versi: 2.0 — Challenge Arena + Final Feedback
+   ============================================================ */
+
+const GURU_ACCESS_KEY = "QUANTA-GURU-2026";
+
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyCTPi6WgelHqFBHUiMy9ypAgZSN7k2Z8-k",
+  authDomain: "questika-quanta.firebaseapp.com",
+  databaseURL: "https://questika-quanta-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "questika-quanta",
+  storageBucket: "questika-quanta.firebasestorage.app",
+  messagingSenderId: "87574752514",
+  appId: "1:87574752514:web:19a9a3f0e1c3d8a5b9c2e6"
+};
+
+/* ============================================================
+   PEMBENTUK SOAL
+   ============================================================ */
+function mcq(teks, fungsi, pilihan, jawaban, penjelasan){
+  return { teks, fungsi: fungsi || "", tipe:"mcq", pilihan, jawaban, penjelasan };
+}
+function essay(teks, fungsi, jawabanTeks, keywords, penjelasan){
+  return { teks, fungsi: fungsi || "", tipe:"esai", jawabanTeks, keywords, penjelasan };
+}
+function opsiJawaban(benar, variasi){
+  const vals = [benar, ...variasi];
+  return [...new Set(vals)].slice(0,4);
+}
+
+/* ============================================================
+   BANK SOAL — 20 / 20 / 30
+   Semua soal dapat dinilai otomatis.
+   ============================================================ */
+const BANK_SOAL = {
+  mudah: [
+    mcq("Jika y = x² + 2x − 3, ke arah mana parabola terbuka?","y = x² + 2x − 3",["Ke atas","Ke bawah","Ke kanan","Ke kiri"],0,"Koefisien x² adalah a = 1 > 0, sehingga parabola terbuka ke atas."),
+    mcq("Sumbu simetri parabola berikut adalah…","y = x² − 6x + 5",["x = 2","x = 3","x = 4","x = 5"],1,"Gunakan x = −b/(2a). Dengan a = 1 dan b = −6, diperoleh x = 3."),
+    mcq("Titik potong grafik dengan sumbu Y adalah…","y = x² − 4x + 3",["(0, 3)","(3, 0)","(0, −3)","(−3, 0)"],0,"Pada sumbu Y, x = 0. Maka y = 3 sehingga titiknya (0, 3)."),
+    mcq("Titik puncak parabola y = x² − 4x + 1 adalah…","y = x² − 4x + 1",["(2, −3)","(−2, 3)","(2, 3)","(4, −3)"],0,"xₚ = 2. Substitusi x = 2 memberi y = 4 − 8 + 1 = −3, jadi (2, −3)."),
+    mcq("Jika diskriminan suatu fungsi kuadrat bernilai 0, grafiknya…","D = 0",["Tidak menyentuh sumbu X","Menyinggung sumbu X di satu titik","Memotong sumbu X di dua titik","Selalu berada di bawah sumbu X"],1,"D = 0 berarti persamaan mempunyai satu akar real kembar, sehingga parabola menyinggung sumbu X."),
+    mcq("Akar-akar dari x² − 5x + 6 = 0 adalah…","x² − 5x + 6 = 0",["1 dan 6","2 dan 3","−2 dan −3","1 dan 5"],1,"x² − 5x + 6 = (x − 2)(x − 3), sehingga x = 2 dan x = 3."),
+    mcq("Sumbu simetri dari y = x² + 4x − 5 adalah…","y = x² + 4x − 5",["x = −4","x = −2","x = 2","x = 4"],1,"x = −b/(2a) = −4/2 = −2."),
+    mcq("Nilai minimum dari y = x² − 2x + 3 adalah…","y = x² − 2x + 3",["1","2","3","4"],1,"xₚ = 1 dan yₚ = 1 − 2 + 3 = 2. Karena a > 0, nilai ini merupakan minimum."),
+    mcq("Grafik y = −x² + 4x − 3 terbuka…","y = −x² + 4x − 3",["ke atas","ke bawah","ke kanan","ke kiri"],1,"a = −1 < 0, sehingga parabola terbuka ke bawah."),
+    mcq("Titik potong sumbu X y = x² − x − 6 adalah…","y = x² − x − 6",["x = −2 dan 3","x = 2 dan −3","x = 1 dan 6","x = −1 dan 6"],0,"Faktorkan menjadi (x − 3)(x + 2) = 0. Jadi x = 3 dan x = −2."),
+    mcq("Berapakah nilai diskriminan y = x² − 5x + 6?","y = x² − 5x + 6",["0","1","2","5"],1,"D = b² − 4ac = 25 − 24 = 1."),
+    mcq("Jika a > 0 pada y = ax² + bx + c, maka titik puncaknya merupakan…","y = ax² + bx + c",["nilai maksimum","nilai minimum","titik potong Y","selalu akar"],1,"a > 0 membuat parabola terbuka ke atas, sehingga titik puncak adalah nilai minimum."),
+    mcq("Nilai y ketika x = 0 pada y = 2x² − 3x + 7 adalah…","y = 2x² − 3x + 7",["−7","0","3","7"],3,"Substitusi x = 0 menghasilkan y = 7. Jadi titik potong Y adalah (0, 7)."),
+    mcq("Manakah fungsi yang membuka ke bawah?","",["y = x² + 2x","y = 2x² − 1","y = −x² + 4x","y = 3x² + 1"],2,"Fungsi membuka ke bawah jika koefisien a negatif. Hanya −x² + 4x yang memiliki a < 0."),
+    mcq("Titik puncak y = x² + 2x − 3 adalah…","y = x² + 2x − 3",["(−1, −4)","(1, −4)","(−1, 4)","(1, 4)"],0,"xₚ = −2/2 = −1. yₚ = 1 − 2 − 3 = −4."),
+    mcq("Jumlah akar persamaan x² − 7x + 10 = 0 adalah…","x² − 7x + 10 = 0",["5","7","10","17"],1,"Dengan Vieta, x₁ + x₂ = −b/a = 7."),
+    mcq("Hasil kali akar x² − 7x + 10 = 0 adalah…","x² − 7x + 10 = 0",["−10","−7","7","10"],3,"Dengan Vieta, x₁x₂ = c/a = 10."),
+    mcq("Parabola y = x² + 2x + 1 menyentuh sumbu X di…","y = x² + 2x + 1",["x = −1","x = 0","x = 1","x = 2"],0,"y = (x + 1)², sehingga akar kembarnya adalah x = −1."),
+    mcq("Jika D > 0, grafik fungsi kuadrat memiliki…","D > 0",["dua titik potong dengan sumbu X","satu titik potong dengan sumbu X","tidak ada titik potong dengan sumbu X","tidak memiliki titik puncak"],0,"D > 0 berarti terdapat dua akar real berbeda, sehingga grafik memotong sumbu X di dua titik."),
+    mcq("Nilai maksimum y = −x² + 6x − 5 adalah…","y = −x² + 6x − 5",["3","4","5","6"],1,"xₚ = 3. yₚ = −9 + 18 − 5 = 4. Karena a < 0, nilai 4 adalah maksimum.")
+  ],
+
+  sedang: [
+    mcq("Diskriminan dari y = 2x² − 4x + 2 adalah…","y = 2x² − 4x + 2",["−4","0","4","8"],1,"D = (−4)² − 4(2)(2) = 16 − 16 = 0."),
+    mcq("Titik puncak y = −x² + 4x − 1 adalah…","y = −x² + 4x − 1",["(2, 3)","(−2, −3)","(2, −3)","(4, 1)"],0,"xₚ = −4/(−2) = 2. yₚ = −4 + 8 − 1 = 3."),
+    mcq("Sumbu simetri y = 3x² − 6x + 1 adalah…","y = 3x² − 6x + 1",["x = −2","x = −1","x = 1","x = 2"],2,"x = −b/(2a) = 6/6 = 1."),
+    mcq("Range fungsi y = −2x² + 4x − 1 adalah…","y = −2x² + 4x − 1",["y ≥ 1","y ≤ 1","y ≥ −1","semua real"],1,"Titik puncak (1, 1) dan parabola terbuka ke bawah, sehingga y ≤ 1."),
+    mcq("Nilai minimum y = 2x² − 8x + 9 adalah…","y = 2x² − 8x + 9",["−1","0","1","2"],2,"xₚ = 2 dan yₚ = 8 − 16 + 9 = 1."),
+    mcq("Jika D < 0, grafik fungsi kuadrat…","D < 0",["memotong X dua titik","menyinggung X satu titik","tidak memotong sumbu X","selalu sejajar X"],2,"D < 0 berarti tidak ada akar real, sehingga grafik tidak memotong sumbu X."),
+    mcq("Akar-akar 2x² − 7x + 3 = 0 adalah…","2x² − 7x + 3 = 0",["3 dan 1/2","1 dan 3","−3 dan −1/2","2 dan 3/4"],0,"D = 25. x = (7 ± 5)/4, sehingga x = 3 dan x = 1/2."),
+    mcq("Titik potong Y dari y = −3x² + 2x − 5 adalah…","y = −3x² + 2x − 5",["(0, 5)","(0, −5)","(−5, 0)","(5, 0)"],1,"Saat x = 0, y = −5. Jadi titik potong Y adalah (0, −5)."),
+    mcq("Nilai maksimum y = −(x − 2)² + 5 adalah…","y = −(x − 2)² + 5",["2","3","4","5"],3,"Bentuk vertex langsung menunjukkan titik puncak (2, 5). Karena a < 0, y maksimum = 5."),
+    mcq("Sumbu simetri y = 2x² − 12x + 7 adalah…","y = 2x² − 12x + 7",["x = 2","x = 3","x = 4","x = 6"],1,"x = 12/(2·2) = 3."),
+    mcq("Agar x² + bx + 9 mempunyai tepat satu akar, b harus memenuhi…","x² + bx + 9",["b = 4 saja","b = 6 atau −6","b = 8 saja","b = 9 saja"],1,"Tepat satu akar berarti D = 0: b² − 36 = 0, sehingga b = ±6."),
+    mcq("Nilai maksimum y = −2(x + 1)² + 8 adalah…","y = −2(x + 1)² + 8",["−2","1","6","8"],3,"Titik puncak adalah (−1, 8). Karena terbuka ke bawah, nilai maksimum = 8."),
+    mcq("Jika y = x² − 4x + k menyinggung sumbu X, nilai k adalah…","y = x² − 4x + k",["2","3","4","8"],2,"Syarat singgung D = 0: 16 − 4k = 0 sehingga k = 4."),
+    mcq("Fungsi y = 2x² + bx + 8 memiliki D = 0. Nilai |b| adalah…","y = 2x² + bx + 8",["4","6","8","16"],2,"D = b² − 64 = 0, maka b = ±8 dan |b| = 8."),
+    mcq("Titik puncak y = 2x² − 8x + 11 adalah…","y = 2x² − 8x + 11",["(2, 3)","(4, 3)","(2, −3)","(−2, 3)"],0,"xₚ = 8/4 = 2 dan yₚ = 8 − 16 + 11 = 3."),
+    essay("Jelaskan langkah menentukan titik puncak fungsi kuadrat y = x² − 6x + 5.","y = x² − 6x + 5","Titik puncak adalah (3, −4). Langkah: xₚ = −b/(2a) = 3, lalu yₚ = 9 − 18 + 5 = −4.",["3","-4","titik puncak","x_p","yp"],"Titik puncak diperoleh dari xₚ = −b/(2a), kemudian nilai xₚ disubstitusikan ke fungsi untuk memperoleh yₚ."),
+    essay("Jelaskan hubungan nilai diskriminan dengan jumlah titik potong grafik terhadap sumbu X.","D = b² − 4ac","D > 0 berarti dua titik potong; D = 0 berarti satu titik potong/menyinggung; D < 0 berarti tidak ada titik potong real.",["d > 0","d = 0","d < 0","dua","satu","tidak ada"],"Diskriminan menentukan banyaknya akar real: positif dua akar berbeda, nol satu akar kembar, negatif tidak ada akar real."),
+    essay("Tentukan range fungsi y = −x² + 4x − 3 dan jelaskan caranya.","y = −x² + 4x − 3","Range adalah y ≤ 1. Titik puncak (2, 1) dan parabola terbuka ke bawah.",["y ≤ 1","1","titik puncak","terbuka ke bawah"],"xₚ = 2 dan yₚ = 1. Karena a = −1 < 0, 1 adalah nilai maksimum, sehingga range y ≤ 1."),
+    essay("Tentukan akar-akar persamaan 2x² − 5x − 3 = 0 dengan rumus kuadrat.","2x² − 5x − 3 = 0","Akar-akarnya x = 3 dan x = −1/2.",["3","-1/2","-0.5","rumus kuadrat"],"D = 25 + 24 = 49. x = (5 ± 7)/4, sehingga x = 3 atau x = −1/2."),
+    essay("Jelaskan mengapa fungsi y = x² − 4x + 5 tidak memotong sumbu X.","y = x² − 4x + 5","D = 16 − 20 = −4 < 0, sehingga tidak memiliki akar real dan tidak memotong sumbu X.",["-4","d < 0","tidak memiliki akar real","tidak memotong sumbu x"],"Diskriminannya negatif, sehingga persamaan y = 0 tidak memiliki solusi real. Akibatnya grafik tidak memotong sumbu X.")
+  ],
+
+  sulit: [
+    mcq("Nilai minimum y = 3x² − 12x + 11 adalah…","y = 3x² − 12x + 11",["−2","−1","0","1"],1,"xₚ = 2 dan yₚ = 12 − 24 + 11 = −1."),
+    mcq("Titik puncak y = −2x² + 8x − 5 adalah…","y = −2x² + 8x − 5",["(2, 3)","(−2, −5)","(2, −3)","(4, 5)"],0,"xₚ = 2 dan yₚ = −8 + 16 − 5 = 3."),
+    mcq("Diskriminan y = 2x² − 3x + 5 adalah…","y = 2x² − 3x + 5",["−31","−11","11","31"],0,"D = 9 − 40 = −31."),
+    mcq("Jika x₁ dan x₂ akar y = x² − 7x + 10, maka x₁ + x₂ =…","y = x² − 7x + 10",["5","7","10","17"],1,"Vieta: x₁ + x₂ = −b/a = 7."),
+    mcq("Jika x₁ dan x₂ akar y = x² − 7x + 10, maka x₁x₂ =…","y = x² − 7x + 10",["−10","−7","7","10"],3,"Vieta: x₁x₂ = c/a = 10."),
+    mcq("Untuk nilai x manakah y = x² − 4x + 3 bernilai positif?","y = x² − 4x + 3",["x < 1 atau x > 3","1 < x < 3","x < −1 atau x > 3","−3 < x < 1"],0,"Akar 1 dan 3, dan a > 0. Grafik positif di luar interval akar: x < 1 atau x > 3."),
+    mcq("Sumbu simetri y = −3(x − 2)² + 5 adalah…","y = −3(x − 2)² + 5",["x = −3","x = −2","x = 2","x = 5"],2,"Bentuk vertex y = a(x − h)² + k memiliki sumbu simetri x = h = 2."),
+    mcq("Agar y = x² − 4x + k selalu positif untuk semua x, syarat k adalah…","y = x² − 4x + k",["k > 2","k > 3","k > 4","k ≥ 4"],2,"Selalu positif memerlukan D < 0: 16 − 4k < 0, sehingga k > 4."),
+    mcq("Nilai y titik puncak y = −(x + 3)² + 7 adalah…","y = −(x + 3)² + 7",["−7","−3","3","7"],3,"Titik puncak adalah (−3, 7), jadi koordinat y-nya 7."),
+    mcq("Fungsi y = x² − 2px + (p + 2) mempunyai akar kembar jika p =…","y = x² − 2px + (p + 2)",["1 saja","2 atau −1","−2 atau 1","2 saja"],1,"D = 4p² − 4p − 8 = 0 → p² − p − 2 = 0 → p = 2 atau −1."),
+    mcq("Nilai a pada y = ax² − 4x − 1 jika sumbu simetrinya x = 1 adalah…","y = ax² − 4x − 1",["1","2","3","4"],1,"1 = −(−4)/(2a) = 2/a, sehingga a = 2."),
+    mcq("Titik potong sumbu X y = −x² + 2x + 3 adalah…","y = −x² + 2x + 3",["−1 dan 3","1 dan 3","−3 dan 1","−1 dan −3"],0,"−x² + 2x + 3 = 0 setara x² − 2x − 3 = 0 = (x−3)(x+1), sehingga x = 3 dan −1."),
+    mcq("Nilai c agar y = x² − 6x + c menyinggung sumbu X adalah…","y = x² − 6x + c",["6","8","9","12"],2,"D = 36 − 4c = 0 → c = 9."),
+    mcq("Fungsi y = 2x² + bx + 8 mempunyai D = 0. Nilai b yang mungkin adalah…","y = 2x² + bx + 8",["−8 saja","8 saja","−8 atau 8","−4 atau 4"],2,"b² − 64 = 0, sehingga b = ±8."),
+    mcq("Parabola y = 2x² − 8x + 11 mempunyai titik puncak…","y = 2x² − 8x + 11",["(2, 3)","(4, 3)","(2, −3)","(−2, 3)"],0,"xₚ = 2 dan yₚ = 3."),
+    mcq("Jika grafik y = x² + bx + 4 menyinggung sumbu X, nilai b adalah…","y = x² + bx + 4",["−4 atau 4","−2 atau 2","4 saja","2 saja"],0,"D = b² − 16 = 0, maka b = ±4."),
+    mcq("Nilai minimum y = 2(x − 3)² − 7 adalah…","y = 2(x − 3)² − 7",["−7","−3","3","7"],0,"Bentuk vertex menunjukkan titik puncak (3, −7), dan a > 0 sehingga −7 adalah minimum."),
+    mcq("Jika akar-akar persamaan x² − 10x + q = 0 berjumlah 10 dan hasil kalinya 21, nilai q adalah…","x² − 10x + q = 0",["10","21","−21","31"],1,"Dengan Vieta, hasil kali akar = q. Karena diberikan 21, maka q = 21."),
+    mcq("Agar grafik y = x² + 2x + k berada seluruhnya di atas sumbu X, syarat k adalah…","y = x² + 2x + k",["k > 0","k > 1","k > 2","k ≥ 1"],1,"D < 0: 4 − 4k < 0 → k > 1. Karena syaratnya di atas, bukan menyentuh, harus k > 1."),
+    mcq("Persamaan kuadrat yang memiliki akar 2 dan −3 adalah…","",["x² + x − 6 = 0","x² − x − 6 = 0","x² + 5x + 6 = 0","x² − 5x + 6 = 0"],0,"Jika akar 2 dan −3, maka (x−2)(x+3) = x² + x − 6."),
+    essay("Tentukan titik puncak, sumbu simetri, dan nilai minimum y = 2x² − 8x + 1. Jelaskan langkahnya.","y = 2x² − 8x + 1","Titik puncak (2, −7), sumbu simetri x = 2, nilai minimum −7.",["2","-7","x = 2","titik puncak","minimum"],"xₚ = 8/4 = 2. yₚ = 2(4) − 16 + 1 = −7. Karena a > 0, minimum = −7."),
+    essay("Tentukan semua nilai k agar y = x² − 6x + k mempunyai dua titik potong dengan sumbu X.","y = x² − 6x + k","D > 0: 36 − 4k > 0 sehingga k < 9.",["d > 0","k < 9","dua titik potong","36","4k"],"D harus positif karena dua akar real berbeda. 36 − 4k > 0 menghasilkan k < 9."),
+    essay("Gunakan rumus Vieta untuk menentukan jumlah dan hasil kali akar y = 3x² − 11x + 6.","y = 3x² − 11x + 6","Jumlah akar = 11/3 dan hasil kali akar = 2.",["11/3","2","jumlah akar","hasil kali","vieta"],"Vieta memberi x₁ + x₂ = −b/a = 11/3 dan x₁x₂ = c/a = 6/3 = 2."),
+    essay("Jelaskan syarat agar y = x² + 4x + k tidak memiliki titik potong dengan sumbu X.","y = x² + 4x + k","D < 0: 16 − 4k < 0, sehingga k > 4.",["d < 0","k > 4","16","tidak memiliki titik potong"],"Tidak ada titik potong berarti tidak ada akar real, sehingga D < 0. Maka 16 − 4k < 0 dan k > 4."),
+    essay("Tentukan persamaan fungsi kuadrat yang memiliki titik puncak (2, −3) dan melalui titik (0, 5).", "Titik puncak (2, −3), melalui (0, 5)","Bentuk y = a(x − 2)² − 3. Substitusi (0,5): 5 = 4a − 3 sehingga a = 2. Jadi y = 2(x − 2)² − 3.",["2(x - 2)^2 - 3","a = 2","(2, -3)","5 = 4a - 3"],"Gunakan bentuk vertex. Substitusi titik (0,5) menghasilkan a = 2, sehingga persamaan y = 2(x−2)² − 3."),
+    essay("Tentukan nilai p agar persamaan x² − 2px + p + 3 = 0 memiliki dua akar real berbeda.","x² − 2px + p + 3 = 0","D > 0: 4p² − 4p − 12 > 0 → p² − p − 3 > 0 → p < (1 − √13)/2 atau p > (1 + √13)/2.",["d > 0","p <","p >","sqrt(13)","(1 -"],"Syarat dua akar real berbeda adalah D > 0. Setelah dibagi 4, p² − p − 3 > 0, sehingga p < (1−√13)/2 atau p > (1+√13)/2."),
+    essay("Tentukan interval x ketika y = −x² + 6x − 8 bernilai positif.","y = −x² + 6x − 8","Akar-akar 2 dan 4. Karena a < 0, fungsi positif untuk 2 < x < 4.",["2 < x < 4","2","4","a < 0","positif"],"−x² + 6x − 8 = 0 memiliki akar 2 dan 4. Parabola terbuka ke bawah, jadi nilainya positif di antara kedua akar."),
+    essay("Sebuah parabola mempunyai titik puncak (−1, 4), terbuka ke atas, dan melalui titik (1, 12). Tentukan persamaannya.","Titik puncak (−1, 4), melalui (1, 12)","y = 2(x + 1)² + 4.",["2(x + 1)^2 + 4","a = 2","(-1, 4)","12"],"Bentuk vertex y = a(x+1)²+4. Substitusi (1,12): 12 = 4a + 4, sehingga a = 2."),
+    essay("Jelaskan mengapa y = 2x² − 4x + 5 selalu positif untuk semua bilangan real x.","y = 2x² − 4x + 5","D = 16 − 40 = −24 < 0 dan a > 0, sehingga grafik tidak memotong sumbu X dan seluruh nilai y positif.",["-24","d < 0","a > 0","selalu positif","tidak memotong"],"Karena D < 0 tidak ada akar real. Dengan a > 0 parabola terbuka ke atas, sehingga seluruh grafik berada di atas sumbu X."),
+    essay("Tentukan nilai m agar titik (1, 2) terletak pada grafik y = x² + mx + 3.","y = x² + mx + 3","2 = 1 + m + 3, sehingga m = −2.",["-2","m = -2","2 = 1 + m + 3"],"Substitusi x = 1 dan y = 2: 2 = 1 + m + 3, jadi m = −2."),
+  ]
+};
+
+const LEVEL_CONFIG = {
+  mudah: { label:"Mudah", waktu:600, jumlah:20, jumlahPG:20, jumlahEsai:0, poinMCQ:5, poinEsai:0, bonusMaks:20 },
+  sedang:{ label:"Sedang", waktu:1200, jumlah:20, jumlahPG:15, jumlahEsai:5, poinMCQ:8, poinEsai:16, bonusMaks:20 },
+  sulit: { label:"Sulit", waktu:1800, jumlah:30, jumlahPG:20, jumlahEsai:10, poinMCQ:10, poinEsai:20, bonusMaks:20 }
+};
+
+let db = null;
+let state = {
+  nama:"", level:"", soal:[], nomorSoal:0, poin:0, benar:0,
+  waktuSisa:0,totalWaktu:0,deadline:0,timerInterval:null,lbLevel:"mudah",lbListener:null,
+  jawaban:[], hasilSoal:[], selesai:false, bonusWaktu:0
+};
+
+/* ============================================================ FIREBASE */
+function inisialisasiFirebase(){
+  try{
+    if(typeof firebase === "undefined") return false;
+    const app = firebase.initializeApp(FIREBASE_CONFIG);
+    db = firebase.database(app);
+    return true;
+  }catch(e){ console.warn("[QUANTA] Firebase:",e.message); return false; }
+}
+async function simpanKeFirebase(payload){
+  if(!db){ tampilkanStatusFirebase("⚠️ Firebase belum terhubung. Skor tidak tersimpan ke leaderboard.",false); return; }
+  try{
+    await db.ref(`tantangan/leaderboard/${state.level}`).push(payload);
+    tampilkanStatusFirebase("✅ Skor berhasil tersimpan ke leaderboard!",true);
+  }catch(e){ tampilkanStatusFirebase("❌ Gagal menyimpan skor: "+e.message,false); }
+}
+function tampilkanStatusFirebase(pesan,sukses){
+  const el=pilih("pesanFirebase"); el.textContent=pesan; el.className="firebase-status "+(sukses?"ok":"error"); el.classList.remove("hidden");
+}
+function muatLeaderboard(level){
+  if(!db){ pilih("lbKonten").innerHTML=`<p>⚠️ Firebase belum terhubung.</p>`; return; }
+  if(state.lbListener) db.ref(`tantangan/leaderboard/${state.lbLevel}`).off("value",state.lbListener);
+  state.lbLevel=level; pilih("lbKonten").innerHTML=`<p>Memuat data…</p>`;
+  const ref=db.ref(`tantangan/leaderboard/${level}`).orderByChild("poin").limitToLast(20);
+  state.lbListener=ref.on("value",snap=>{
+    const data=snap.val();
+    if(!data){ pilih("lbKonten").innerHTML=`<p>Belum ada pemain di level ini. Jadilah yang pertama! 🚀</p>`; return; }
+    const daftar=Object.values(data).sort((a,b)=>b.poin-a.poin || (a.durasi||99999)-(b.durasi||99999));
+    renderTabelLeaderboard(daftar);
+  },err=>pilih("lbKonten").innerHTML=`<p>Gagal memuat data: ${escHTML(err.message)}</p>`);
+}
+function renderTabelLeaderboard(daftar){
+  const cfg=LEVEL_CONFIG[state.lbLevel];
+  let html=`<div class="lb-header"><span>#</span><span>Nama</span><span>Poin</span><span>Benar</span><span>Durasi</span></div>`;
+  daftar.forEach((d,i)=>{
+    const rank=i+1, medal=rank===1?"🥇":rank===2?"🥈":rank===3?"🥉":rank;
+    const durasi=formatWaktu(d.durasi ?? (cfg.waktu-(d.waktuSisa||0)));
+    html+=`<div class="lb-baris"><span class="lb-rank">${medal}</span><span>${escHTML(d.nama)}</span><span class="lb-poin">${d.poin}</span><span>${d.benar}/${d.total}</span><span class="lb-waktu">${durasi}</span></div>`;
+  });
+  pilih("lbKonten").innerHTML=html;
+}
+
+/* ============================================================ NAVIGASI */
+const LAYAR_IDS=["layarBeranda","layarCara","layarDaftar","layarLevel","layarArena","layarHasil","layarGuruLogin","layarLeaderboard"];
+let guruTerautentikasi = false;
+let leaderboardTujuan = "mudah";
+function tampilkanLayar(id){ LAYAR_IDS.forEach(x=>{const el=pilih(x); if(el) el.classList.toggle("hidden",x!==id);}); window.scrollTo(0,0); }
+
+/* ============================================================ GAME */
+function mulaiPermainan(level){
+  const cfg=LEVEL_CONFIG[level];
+  const pg=acak([...BANK_SOAL[level].filter(s=>s.tipe==="mcq")]);
+  const es=acak([...BANK_SOAL[level].filter(s=>s.tipe==="esai")]);
+  state.level=level; state.poin=0; state.benar=0; state.nomorSoal=0; state.waktuSisa=cfg.waktu; state.totalWaktu=cfg.waktu; state.deadline=Date.now()+cfg.waktu*1000; state.bonusWaktu=0; state.selesai=false;
+  state.soal=[...pg.slice(0,cfg.jumlahPG),...es.slice(0,cfg.jumlahEsai)];
+  acak(state.soal); state.jawaban=new Array(state.soal.length).fill(null); state.hasilSoal=[];
+  pilih("arenaNama").textContent=state.nama; pilih("arenaLevel").textContent=cfg.label;
+  tampilkanLayar("layarArena"); renderNavigasiSoal(); tampilkanSoal(); mulaiTimer();
+}
+function tampilkanSoal(){
+  if(state.selesai) return;
+  const soal=state.soal[state.nomorSoal];
+  pilih("soalNomor").textContent=`SOAL ${state.nomorSoal+1} · ${soal.tipe==="mcq"?"PILIHAN GANDA":"ESAI"}`;
+  pilih("soalTeks").textContent=soal.teks;
+  const f=pilih("soalFungsi"); f.textContent=soal.fungsi||""; f.classList.toggle("hidden",!soal.fungsi);
+  const total=state.soal.length, answered=state.jawaban.filter(v=>v!==null && v!=="").length;
+  pilih("arenaProgressBar").style.width=((state.nomorSoal+1)/total*100)+"%";
+  pilih("arenaProgresLabel").textContent=`Soal ${state.nomorSoal+1} / ${total}`;
+  pilih("arenaTerjawabLabel").textContent=`Terjawab ${answered}/${total}`;
+  pilih("arenaPoin").textContent=state.poin;
+  sembunyikan("btnSoalBerikut");
+  const kotakMCQ=pilih("kotakMCQ");
+  const kotakIsian=pilih("kotakIsian");
+  if(soal.tipe==="mcq"){
+    sembunyikan("kotakIsian");
+    tampilkan("kotakMCQ");
+    kotakMCQ.innerHTML="";
+    soal.pilihan.forEach((teksPilihan,i)=>{
+      const btn=document.createElement("button");
+      btn.type="button";
+      btn.className="btn-pilihan";
+      btn.dataset.idx=i;
+      btn.innerHTML=`<span class="option-letter">${String.fromCharCode(65+i)}.</span><span class="option-text"></span>`;
+      btn.querySelector(".option-text").textContent=teksPilihan;
+      if(state.jawaban[state.nomorSoal]===i) btn.classList.add("selected");
+      btn.onclick=()=>pilihMCQ(i);
+      kotakMCQ.appendChild(btn);
+    });
+  }else{
+    sembunyikan("kotakMCQ");
+    tampilkan("kotakIsian");
+    const input=pilih("inputJawaban");
+    input.value=state.jawaban[state.nomorSoal]||"";
+    input.disabled=false;
+    input.oninput=()=>{state.jawaban[state.nomorSoal]=input.value;renderNavigasiSoal();};
+  }
+  renderNavigasiSoal();
+}
+function pilihMCQ(idx){ state.jawaban[state.nomorSoal]=idx; document.querySelectorAll(".btn-pilihan").forEach((b,i)=>b.classList.toggle("selected",i===idx)); renderNavigasiSoal(); }
+function renderNavigasiSoal(){
+  const nav=pilih("navSoal"); if(!nav) return; nav.innerHTML="";
+  state.soal.forEach((s,i)=>{const b=document.createElement("button");b.type="button";b.textContent=i+1;b.title=`Soal ${i+1} · ${s.tipe==="mcq"?"Pilihan ganda":"Esai"}`;if(s.tipe==="esai")b.classList.add("esai");if(state.jawaban[i]!==null&&state.jawaban[i]!=="")b.classList.add("terjawab");if(i===state.nomorSoal)b.classList.add("aktif");b.onclick=()=>{state.nomorSoal=i;tampilkanSoal();};nav.appendChild(b);});
+}
+function mulaiTimer(){
+  clearInterval(state.timerInterval);
+  state.deadline=Date.now()+state.waktuSisa*1000;
+  renderTimer();
+  state.timerInterval=setInterval(()=>{
+    const sisa=Math.max(0,state.deadline-Date.now());
+    state.waktuSisa=Math.ceil(sisa/1000);
+    renderTimer();
+    if(sisa<=0){
+      clearInterval(state.timerInterval);
+      state.waktuSisa=0;
+      renderTimer();
+      selesaiPermainan(true);
+    }
+  },250);
+}
+function renderTimer(){
+  const el=pilih("arenaTimer");
+  if(!el)return;
+  el.textContent=formatWaktu(Math.max(0,state.waktuSisa));
+  const p=state.totalWaktu?state.waktuSisa/state.totalWaktu:0;
+  el.className="arena-timer "+(p<=.15?"danger":p<=.35?"warn":"");
+}
+function kumpulkanDenganKonfirmasi(){
+  const belum=state.jawaban.filter(v=>v===null||v==="").length;
+  if(belum>0 && !confirm(`Masih ada ${belum} soal yang belum dijawab. Soal tersebut akan dinilai sebagai tidak dijawab. Tetap kumpulkan?`)) return;
+  selesaiPermainan(false);
+}
+function selesaiPermainan(waktuHabis=false){
+  if(state.selesai) return; state.selesai=true; clearInterval(state.timerInterval);
+  const cfg=LEVEL_CONFIG[state.level]; state.hasilSoal=[]; state.poin=0; state.benar=0;
+  state.soal.forEach((s,i)=>{
+    const raw=state.jawaban[i]; const kosong=raw===null||raw===""; let status=false, skor=0, jawabanSiswa="Tidak dijawab";
+    if(s.tipe==="mcq"){
+      if(!kosong){jawabanSiswa=s.pilihan[raw]??"Tidak dijawab";status=raw===s.jawaban;skor=status?cfg.poinMCQ:0;}
+      state.hasilSoal.push({soal:s,jawabanSiswa,jawabanBenar:s.pilihan[s.jawaban],status,skor});
+    }else{
+      if(!kosong){jawabanSiswa=String(raw);const match=hitungKecocokanEsai(jawabanSiswa,s.keywords);skor=Math.round(cfg.poinEsai*match);status=match>=.8;}
+      state.hasilSoal.push({soal:s,jawabanSiswa,jawabanBenar:s.jawabanTeks,status,skor,match:!kosong?hitungKecocokanEsai(jawabanSiswa,s.keywords):0});
+    }
+    state.poin+=skor;if(status)state.benar++;
+  });
+  state.bonusWaktu=waktuHabis?0:Math.round((state.waktuSisa/state.totalWaktu)*cfg.bonusMaks); state.poin+=state.bonusWaktu;
+  const total=state.soal.length, nilai=Math.round((state.hasilSoal.reduce((a,b)=>a+b.skor,0)/maksPoin(cfg))*100);
+  renderHasil(nilai,total,waktuHabis); tampilkanLayar("layarHasil");
+  simpanKeFirebase({nama:state.nama,poin:state.poin,benar:state.benar,total,waktuSisa:state.waktuSisa,durasi:state.totalWaktu-state.waktuSisa,nilai,timestamp:Date.now()});
+}
+function renderHasil(nilai,total,waktuHabis){
+  let badge="💪",judul="Tetap Berlatih!",sub="Buka pembahasan di bawah untuk melihat bagian yang perlu diperkuat.";
+  if(nilai>=90){badge="🏆";judul="Master Challenge!";sub="Performa sangat kuat. Pertahankan ketelitianmu."}
+  else if(nilai>=75){badge="🔥";judul="Challenge Ditaklukkan!";sub="Hasilmu sudah bagus. Cek pembahasan untuk menyempurnakannya."}
+  else if(nilai>=60){badge="⚡";judul="Makin Dekat!";sub="Dasarmu sudah terbentuk. Pelajari soal yang masih keliru."}
+  if(waktuHabis)sub="Waktu habis. Tidak apa-apa—gunakan pembahasan untuk memperbaiki strategi pengerjaan berikutnya.";
+  pilih("hasilBadge").textContent=badge;pilih("hasilJudul").textContent=judul;pilih("hasilSub").textContent=sub;pilih("hasilPoin").textContent=state.poin;pilih("hasilBenar").textContent=`${state.benar}/${total}`;pilih("hasilNilai").textContent=nilai;pilih("hasilBonus").textContent=`+${state.bonusWaktu}`;sembunyikan("pesanFirebase");
+  const list=pilih("reviewList");list.innerHTML="";
+  state.hasilSoal.forEach((r,i)=>{
+    const div=document.createElement("div");div.className=`review-item ${r.status?"good":"bad"}`;
+    const skorText=r.soal.tipe==="esai"?`+${r.skor} poin · ${Math.round((r.match||0)*100)}% kecocokan`: `+${r.skor} poin`;
+    div.innerHTML=`<div class="review-top"><span>Soal ${i+1} · ${r.soal.tipe==="mcq"?"PG":"ESAI"}</span><span class="${r.status?"status-good":"status-bad"}">${r.status?"✓ Benar":"✕ Perlu diperbaiki"} · ${skorText}</span></div><div class="review-question">${escHTML(r.soal.teks)}</div><div class="review-answer"><b>Jawabanmu:</b> ${escHTML(r.jawabanSiswa)}<br><b>Jawaban benar/model:</b> ${escHTML(r.jawabanBenar)}</div><div class="review-exp"><b>💡 Pembahasan:</b> ${escHTML(r.soal.penjelasan)}</div>`;
+    list.appendChild(div);
+  });
+}
+function hitungKecocokanEsai(jawaban,keywords){
+  const t=normalisasi(jawaban); if(!t)return 0;
+  let hit=0; keywords.forEach(k=>{if(t.includes(normalisasi(k)))hit++;});
+  return keywords.length?Math.min(1,hit/Math.max(2,Math.ceil(keywords.length*.6))):0;
+}
+function normalisasi(s){return String(s).toLowerCase().replace(/−/g,"-").replace(/\s+/g," ").trim();}
+function maksPoin(cfg){return cfg.jumlahPG*cfg.poinMCQ+cfg.jumlahEsai*cfg.poinEsai;}
+
+/* ============================================================ UTILITAS */
+function pilih(id){return document.getElementById(id)}
+function tampilkan(id){pilih(id).classList.remove("hidden")}
+function sembunyikan(id){pilih(id).classList.add("hidden")}
+function formatWaktu(detik){const m=Math.floor(detik/60).toString().padStart(2,"0"),s=(detik%60).toString().padStart(2,"0");return `${m}:${s}`}
+function acak(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]]}return arr}
+function escHTML(str){return String(str??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+
+/* ============================================================ AKSES GURU + DASHBOARD */
+function bukaAksesGuru(level="mudah"){
+  leaderboardTujuan=level||"mudah";
+  if(guruTerautentikasi){
+    tampilkanLayar("layarLeaderboard");
+    aturTabLeaderboard(leaderboardTujuan);
+    muatLeaderboard(leaderboardTujuan);
+    return;
+  }
+  pilih("inputKunciGuru").value="";
+  pilih("pesanKunciGuru").textContent="";
+  sembunyikan("pesanKunciGuru");
+  tampilkanLayar("layarGuruLogin");
+  setTimeout(()=>pilih("inputKunciGuru")?.focus(),80);
+}
+function masukGuru(){
+  const key=pilih("inputKunciGuru").value;
+  if(key===GURU_ACCESS_KEY){
+    guruTerautentikasi=true;
+    sembunyikan("pesanKunciGuru");
+    tampilkanLayar("layarLeaderboard");
+    aturTabLeaderboard(leaderboardTujuan);
+    muatLeaderboard(leaderboardTujuan);
+  }else{
+    pilih("pesanKunciGuru").textContent="Kunci akses salah. Silakan coba lagi.";
+    tampilkan("pesanKunciGuru");
+    pilih("inputKunciGuru").select();
+  }
+}
+function cekAksesGuru(){
+  if(!guruTerautentikasi){bukaAksesGuru(state.level||"mudah");return false;}
+  return true;
+}
+function tampilkanStatusGuru(pesan,sukses=true){
+  const el=pilih("pesanGuruDashboard"); if(!el)return;
+  el.textContent=pesan; el.className="firebase-status "+(sukses?"ok":"error"); el.classList.remove("hidden");
+}
+async function hapusNilaiLevel(){
+  if(!cekAksesGuru()||!db)return;
+  const level=state.lbLevel||"mudah";
+  if(!confirm(`Hapus SEMUA nilai leaderboard level ${LEVEL_CONFIG[level].label}? Data yang dihapus tidak dapat dikembalikan.`))return;
+  try{
+    await db.ref(`tantangan/leaderboard/${level}`).remove();
+    tampilkanStatusGuru(`✅ Semua nilai level ${LEVEL_CONFIG[level].label} berhasil dihapus.`);
+    muatLeaderboard(level);
+  }catch(e){tampilkanStatusGuru(`❌ Gagal menghapus nilai: ${e.message}`,false);}
+}
+async function hapusSemuaNilai(){
+  if(!cekAksesGuru()||!db)return;
+  if(!confirm("HAPUS SEMUA NILAI dari semua level Mudah, Sedang, dan Sulit? Tindakan ini tidak dapat dibatalkan."))return;
+  try{
+    await db.ref("tantangan/leaderboard").remove();
+    tampilkanStatusGuru("✅ Semua data leaderboard dari seluruh level berhasil dihapus.");
+    muatLeaderboard(state.lbLevel||"mudah");
+  }catch(e){tampilkanStatusGuru(`❌ Gagal menghapus semua data: ${e.message}`,false);}
+}
+function normalisasiHeaderExcel(v){return String(v??"").toLowerCase().replace(/[ _-]/g,"").trim();}
+function angkaExcel(v,def=0){
+  if(v===null||v===undefined||v==="")return def;
+  const n=Number(String(v).replace(/,/g,".")); return Number.isFinite(n)?n:def;
+}
+async function prosesUploadExcel(file){
+  if(!cekAksesGuru()||!db||!file)return;
+  if(typeof XLSX==="undefined"){tampilkanStatusGuru("❌ Library Excel belum termuat. Periksa koneksi internet lalu refresh halaman.",false);return;}
+  try{
+    const buffer=await file.arrayBuffer();
+    const wb=XLSX.read(buffer,{type:"array"});
+    const ws=wb.Sheets[wb.SheetNames[0]];
+    const rows=XLSX.utils.sheet_to_json(ws,{defval:""});
+    if(!rows.length)throw new Error("File Excel tidak memiliki data.");
+    const level=state.lbLevel||"mudah";
+    const cfg=LEVEL_CONFIG[level];
+    const entries={};
+    rows.forEach((row,i)=>{
+      const map={}; Object.keys(row).forEach(k=>map[normalisasiHeaderExcel(k)]=row[k]);
+      const nama=String(map.nama||map.namasiswa||map.siswa||"").trim();
+      if(!nama)return;
+      const poin=angkaExcel(map.poin,0);
+      const total=angkaExcel(map.total,cfg.jumlah);
+      const benar=angkaExcel(map.benar,0);
+      const durasi=angkaExcel(map.durasi,0);
+      const nilai=angkaExcel(map.nilai,0);
+      const bonusWaktu=angkaExcel(map.bonuswaktu,0);
+      const key=db.ref(`tantangan/leaderboard/${level}`).push().key;
+      entries[key]={nama,poin,benar,total,durasi,nilai,bonusWaktu,timestamp:Date.now(),sumber:"excel"};
+    });
+    const count=Object.keys(entries).length;
+    if(!count)throw new Error("Tidak ada baris valid. Pastikan ada kolom Nama.");
+    await db.ref(`tantangan/leaderboard/${level}`).update(entries);
+    tampilkanStatusGuru(`✅ ${count} data berhasil di-upload ke leaderboard level ${cfg.label}.`);
+    muatLeaderboard(level);
+  }catch(e){tampilkanStatusGuru(`❌ Upload Excel gagal: ${e.message}`,false);}
+  finally{pilih("inputExcel").value="";}
+}
+
+/* ============================================================ EVENT */
+function aturTabLeaderboard(level){document.querySelectorAll(".lb-tab").forEach(t=>t.classList.toggle("aktif",t.dataset.level===level))}
+function ikatEvent(){
+  pilih("btnTema").onclick=()=>{const dark=document.documentElement.getAttribute("data-theme")==="dark";document.documentElement.setAttribute("data-theme",dark?"light":"dark");pilih("btnTema").textContent=dark?"🌙":"☀️"};
+  pilih("btnKeCara").onclick=()=>tampilkanLayar("layarCara");pilih("btnKeDaftar").onclick=()=>tampilkanLayar("layarDaftar");pilih("btnKeLeaderboard").onclick=()=>bukaAksesGuru("mudah");
+  pilih("btnDariBeranda").onclick=()=>tampilkanLayar("layarBeranda");pilih("btnMulaiDariCara").onclick=()=>tampilkanLayar("layarDaftar");
+  pilih("btnDariDaftar").onclick=()=>tampilkanLayar("layarBeranda");pilih("btnKeLevel").onclick=()=>{const nama=pilih("inputNama").value.trim();if(!nama){tampilkan("pesanNama");pilih("pesanNama").textContent="Nama tidak boleh kosong.";return}sembunyikan("pesanNama");state.nama=nama;pilih("sapaanLevel").textContent=`Hai, ${nama}! Pilih level yang siap kamu taklukkan.`;tampilkanLayar("layarLevel")};
+  pilih("inputNama").onkeydown=e=>{if(e.key==="Enter")pilih("btnKeLevel").click()};pilih("btnDariLevel").onclick=()=>tampilkanLayar("layarDaftar");
+  document.querySelectorAll(".level-card").forEach(b=>b.onclick=()=>mulaiPermainan(b.dataset.level));
+  pilih("btnSoalBerikut").onclick=()=>{if(state.nomorSoal<state.soal.length-1){state.nomorSoal++;tampilkanSoal()}};
+  pilih("btnKumpulkan").onclick=kumpulkanDenganKonfirmasi;
+  pilih("btnLihatLeaderboard").onclick=()=>bukaAksesGuru(state.level);
+  pilih("btnMainLagi").onclick=()=>{pilih("inputNama").value=state.nama;tampilkanLayar("layarDaftar")};
+  pilih("btnDariLeaderboard").onclick=()=>tampilkanLayar("layarBeranda");
+  pilih("btnDariGuruLogin").onclick=()=>tampilkanLayar("layarBeranda");
+  pilih("btnBatalGuru").onclick=()=>tampilkanLayar("layarBeranda");
+  pilih("btnMasukGuru").onclick=masukGuru;
+  pilih("inputKunciGuru").onkeydown=e=>{if(e.key==="Enter")masukGuru()};
+  pilih("btnHapusLevel").onclick=hapusNilaiLevel;
+  pilih("btnHapusSemua").onclick=hapusSemuaNilai;
+  pilih("btnUploadExcel").onclick=()=>{if(cekAksesGuru())pilih("inputExcel").click()};
+  pilih("inputExcel").onchange=e=>prosesUploadExcel(e.target.files?.[0]);
+  document.querySelectorAll(".lb-tab").forEach(t=>t.onclick=()=>{if(!cekAksesGuru())return;const lv=t.dataset.level;aturTabLeaderboard(lv);muatLeaderboard(lv)});
+}
+
+function initQUANTA(){
+  try{ inisialisasiFirebase(); ikatEvent(); }
+  catch(err){ console.error("[QUANTA] Gagal menginisialisasi halaman:",err); }
+}
+if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",initQUANTA);
+else initQUANTA();

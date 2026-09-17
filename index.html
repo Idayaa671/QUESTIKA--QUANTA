@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QUANTA — Mode Tantangan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#070b16;--panel:#0f172a;--panel2:#121d33;--text:#f8fafc;--muted:#9aa8bd;--line:rgba(255,255,255,.1);--primary:#7c5cff;--primary2:#00d4ff;--good:#20d88a;--bad:#ff5d73;--warn:#ffb547;--shadow:0 24px 80px rgba(0,0,0,.35)}
+[data-theme=light]{--bg:#eef2ff;--panel:#fff;--panel2:#f7f8ff;--text:#101426;--muted:#657089;--line:rgba(16,20,38,.1);--shadow:0 24px 60px rgba(36,45,80,.15)}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Inter,sans-serif;background:var(--bg);color:var(--text)}body{overflow-x:hidden}.hidden{display:none!important}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 15% 15%,rgba(124,92,255,.18),transparent 28%),radial-gradient(circle at 85% 20%,rgba(0,212,255,.13),transparent 25%),radial-gradient(circle at 50% 100%,rgba(32,216,138,.08),transparent 35%)}
+.bg-particles{position:fixed;inset:0;pointer-events:none;opacity:.35;background-image:radial-gradient(circle,rgba(255,255,255,.6) 1px,transparent 1px);background-size:42px 42px;mask-image:linear-gradient(to bottom,black,transparent)}
+button,input{font:inherit}button{cursor:pointer}.layar{position:relative;min-height:100vh;padding:28px 22px}.hero-inner,.scroll-inner{width:min(1120px,100%);margin:auto}.scroll-narrow{max-width:760px}.eyebrow{font-size:12px;font-weight:800;letter-spacing:.16em;color:var(--primary2);margin:0 0 10px}.hero-title,.section-title{font-family:"Space Grotesk";line-height:1.03;margin:0}.hero-title{font-size:clamp(44px,8vw,86px);max-width:900px;letter-spacing:-.05em}.section-title{font-size:clamp(34px,6vw,58px);letter-spacing:-.04em}.hero-sub,.section-sub{color:var(--muted);font-size:17px;line-height:1.7;max-width:700px}.btn-tema{position:absolute;right:24px;top:24px;border:1px solid var(--line);background:var(--panel);color:var(--text);width:46px;height:46px;border-radius:14px}.hero-badges{display:flex;flex-wrap:wrap;gap:10px;margin:26px 0}.badge{padding:9px 13px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.04);font-size:13px;font-weight:700}.hero-choice{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;max-width:760px;margin-top:30px}.btn-choice,.level-card,.cara-card,.card,.hasil-stat{border:1px solid var(--line);background:linear-gradient(145deg,rgba(255,255,255,.07),rgba(255,255,255,.025));color:var(--text);border-radius:22px}.btn-choice{display:flex;align-items:center;gap:15px;text-align:left;padding:20px;transition:.2s;box-shadow:var(--shadow)}.btn-choice:hover,.level-card:hover{transform:translateY(-3px);border-color:rgba(124,92,255,.65)}.btn-choice-primary{background:linear-gradient(135deg,var(--primary),#4c39cf);border-color:transparent}.choice-icon{font-size:28px}.choice-title{display:block;font-weight:800;font-size:17px}.choice-desc{display:block;color:rgba(255,255,255,.72);font-size:13px;margin-top:4px}.btn-ghost,.btn-primary,.btn-kembali{border:1px solid var(--line);border-radius:14px;padding:12px 17px;color:var(--text);background:transparent;font-weight:800}.btn-primary{background:linear-gradient(135deg,var(--primary),#4c39cf);border:0;color:#fff}.btn-ghost:hover,.btn-kembali:hover{background:rgba(255,255,255,.06)}.btn-besar{padding:16px 22px;font-size:16px}.btn-full{width:100%}.btn-lb-awal{margin-top:16px}
+.layar-scroll{padding-top:56px}.btn-kembali{margin-bottom:35px}.cara-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:30px 0}.cara-card{padding:20px}.cara-icon{font-size:26px}.cara-card h3{margin:15px 0 8px}.cara-card p,.level-ciri{color:var(--muted);line-height:1.65;font-size:13px}.poin-tabel{border:1px solid var(--line);border-radius:20px;overflow:hidden;margin:20px 0 28px}.poin-tabel h3{margin:0;padding:18px 20px;background:rgba(124,92,255,.12)}.poin-row{display:flex;justify-content:space-between;padding:14px 20px;border-top:1px solid var(--line)}.poin-val{font-weight:800;color:var(--primary2)}.form-group{margin:28px 0}.form-group label{display:block;font-weight:800;margin-bottom:9px}.form-group input{width:100%;padding:17px;border-radius:16px;border:1px solid var(--line);background:var(--panel);color:var(--text);outline:none}.form-group input:focus{border-color:var(--primary)}.pesan-error{color:var(--bad)}
+.level-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:32px}.level-card{text-align:left;padding:24px;transition:.2s;position:relative;overflow:hidden}.level-card:after{content:"";position:absolute;width:130px;height:130px;border-radius:50%;right:-60px;top:-60px;background:rgba(124,92,255,.18)}.level-card-mid:after{background:rgba(255,181,71,.16)}.level-card-hard:after{background:rgba(255,93,115,.16)}.level-icon{font-size:34px;display:block}.level-nama{font-family:"Space Grotesk";font-size:28px;font-weight:800;display:block;margin-top:14px}.level-detail{display:block;color:var(--primary2);font-weight:800;margin-top:5px}.level-poin-max{margin-top:18px;font-size:13px;color:var(--muted)}.level-poin-max b{color:var(--text)}.level-ciri{padding-left:18px;margin-bottom:0}.level-ciri li{margin:8px 0}
+.arena-topbar{position:sticky;top:0;z-index:10;width:min(1180px,100%);margin:0 auto 14px;padding:13px 15px;border:1px solid var(--line);background:rgba(7,11,22,.86);backdrop-filter:blur(18px);border-radius:18px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px}.arena-info{display:flex;align-items:center;gap:10px}.arena-nama{font-weight:800}.arena-badge-level{padding:7px 10px;border-radius:999px;background:rgba(124,92,255,.18);font-size:11px;font-weight:800}.arena-timer{font-family:"Space Grotesk";font-size:28px;font-weight:800;text-align:center;min-width:100px}.arena-timer.warn{color:var(--warn)}.arena-timer.danger{color:var(--bad);animation:pulse 1s infinite}.arena-skor{text-align:right}.arena-skor-label{font-size:10px;color:var(--muted);display:block}.arena-skor-val{font-size:20px;font-weight:900;color:var(--primary2)}@keyframes pulse{50%{transform:scale(1.06)}}
+.arena-progress-wrap{width:min(1180px,100%);margin:0 auto 14px}.arena-progress-track{height:8px;background:rgba(255,255,255,.08);border-radius:999px;overflow:hidden}.arena-progress-bar{height:100%;width:0;background:linear-gradient(90deg,var(--primary),var(--primary2));transition:.25s}.arena-meta{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:12px;margin-top:8px}.arena-layout{width:min(1180px,100%);margin:auto;display:grid;grid-template-columns:1fr 270px;gap:16px}.arena-soal-box{padding:30px;min-height:510px}.soal-nomor{color:var(--primary2);font-size:12px;font-weight:900;letter-spacing:.12em}.soal-teks{font-family:"Space Grotesk";font-size:clamp(23px,3vw,34px);line-height:1.35;margin:14px 0}.soal-fungsi{display:inline-block;font-family:"Space Grotesk";font-size:22px;font-weight:800;background:rgba(124,92,255,.13);border:1px solid rgba(124,92,255,.25);padding:13px 17px;border-radius:13px;margin:4px 0 22px}.kotak-mcq{display:grid;grid-template-columns:1fr 1fr;gap:12px}.btn-pilihan{border:1px solid var(--line);background:var(--panel2);color:var(--text);padding:17px;text-align:left;border-radius:15px;transition:.15s}.btn-pilihan:hover:not(:disabled){border-color:var(--primary);transform:translateY(-2px)}.btn-pilihan.selected{border-color:var(--primary);background:rgba(124,92,255,.18)}.answer-label{display:block;font-weight:800;margin-bottom:9px}.answer-note{display:block;color:var(--muted);margin-top:8px;line-height:1.5}.kotak-isian textarea{width:100%;min-height:180px;resize:vertical;border-radius:15px;border:1px solid var(--line);background:var(--panel2);color:var(--text);padding:15px;outline:none}.btn-next{margin-top:15px}.arena-side{padding:18px;height:max-content}.arena-side h3{margin-top:0}.nav-soal{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}.nav-soal button{aspect-ratio:1;border-radius:9px;border:1px solid var(--line);background:transparent;color:var(--text);font-weight:800}.nav-soal button.aktif{background:var(--primary);border-color:var(--primary);color:white}.nav-soal button.terjawab{border-color:var(--good);color:var(--good)}.nav-soal button.esai{font-size:11px}.side-note{color:var(--muted);font-size:12px;line-height:1.6;margin-top:15px}.submit-area{margin-top:20px;padding-top:18px;border-top:1px solid var(--line)}
+.hasil-wrap{max-width:1000px}.hasil-head{text-align:center}.hasil-badge{font-size:64px;margin-bottom:8px}.hasil-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:28px 0}.hasil-stat{padding:20px;text-align:center}.hasil-stat-val{font-family:"Space Grotesk";font-size:29px;font-weight:900;display:block}.hasil-stat-label{color:var(--muted);font-size:12px}.hasil-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px}.review-wrap{margin-top:30px}.review-wrap h3{font-family:"Space Grotesk"}.review-item{border:1px solid var(--line);border-radius:16px;padding:17px;margin:10px 0;background:var(--panel)}.review-item.good{border-left:4px solid var(--good)}.review-item.bad{border-left:4px solid var(--bad)}.review-top{display:flex;justify-content:space-between;gap:10px;font-weight:800}.status-good{color:var(--good)}.status-bad{color:var(--bad)}.review-question{margin:10px 0;font-weight:700}.review-answer{color:var(--muted);font-size:13px;line-height:1.7}.review-exp{margin-top:10px;padding:12px;border-radius:12px;background:rgba(124,92,255,.08);font-size:13px;line-height:1.65}.firebase-status{margin:15px 0;padding:12px;border-radius:12px;font-size:13px}.firebase-status.ok{background:rgba(32,216,138,.1);color:var(--good)}.firebase-status.error{background:rgba(255,93,115,.1);color:var(--bad)}
+.lb-tab-row{display:flex;gap:8px;margin:24px 0}.lb-tab{padding:10px 14px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--text);font-weight:800}.lb-tab.aktif{background:var(--primary);border-color:var(--primary);color:#fff}.lb-header,.lb-baris{display:grid;grid-template-columns:45px 1fr 80px 80px 80px;gap:10px;align-items:center}.lb-header{color:var(--muted);font-size:11px;padding:10px 14px}.lb-baris{padding:13px 14px;border:1px solid var(--line);border-radius:12px;margin:7px 0;background:var(--panel)}.lb-rank{font-weight:900}.lb-rank-1,.lb-rank-2,.lb-rank-3{font-size:19px}.lb-poin{color:var(--primary2);font-weight:900}.lb-waktu{color:var(--muted);font-size:12px}.lb-note{color:var(--muted);font-size:12px}.guru-panel{margin-top:26px;padding:22px;border:1px solid rgba(124,92,255,.3);border-radius:20px;background:linear-gradient(145deg,rgba(124,92,255,.11),rgba(0,212,255,.04))}.guru-panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:18px}.guru-panel h3{margin:0 0 6px;font-family:"Space Grotesk";font-size:22px}.guru-panel p{margin:0;color:var(--muted);font-size:13px;line-height:1.6}.guru-actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}.btn-danger{border:1px solid rgba(255,93,115,.35);border-radius:14px;padding:12px 17px;color:#fff;background:rgba(255,93,115,.16);font-weight:800}.btn-danger:hover{background:rgba(255,93,115,.28)}.btn-excel{border:1px solid rgba(32,216,138,.35);border-radius:14px;padding:12px 17px;color:var(--text);background:rgba(32,216,138,.1);font-weight:800}.btn-excel:hover{background:rgba(32,216,138,.18)}.lb-import-info{margin-top:12px;padding:12px;border-radius:12px;background:rgba(255,255,255,.04);color:var(--muted);font-size:12px;line-height:1.6}.guru-login{max-width:560px;margin:40px auto}.guru-lock-icon{font-size:56px;margin-bottom:10px}.guru-login-card{padding:30px}.guru-login input{width:100%;padding:16px;border-radius:15px;border:1px solid var(--line);background:var(--panel);color:var(--text);outline:none}.guru-login input:focus{border-color:var(--primary)}.guru-login-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.guru-error{color:var(--bad);font-size:13px;margin:10px 0 0}.guru-unlocked{display:inline-flex;align-items:center;gap:7px;padding:7px 10px;border-radius:999px;background:rgba(32,216,138,.1);color:var(--good);font-size:11px;font-weight:800}
+@media(max-width:850px){.cara-grid,.level-grid{grid-template-columns:1fr 1fr}.arena-layout{grid-template-columns:1fr}.arena-side{order:-1}.nav-soal{grid-template-columns:repeat(10,1fr)}.arena-soal-box{min-height:auto}}
+@media(max-width:600px){.layar{padding:20px 14px}.hero-choice,.cara-grid,.level-grid,.hasil-grid,.hasil-actions{grid-template-columns:1fr}.hero-title{font-size:46px}.arena-topbar{grid-template-columns:1fr auto;position:relative}.arena-skor{grid-column:1/2;text-align:left}.arena-timer{grid-column:2/3;grid-row:1/3}.kotak-mcq{grid-template-columns:1fr}.arena-soal-box{padding:20px}.nav-soal{grid-template-columns:repeat(8,1fr)}.lb-header,.lb-baris{grid-template-columns:30px 1fr 55px 55px 60px;font-size:11px}.guru-actions,.guru-login-actions{grid-template-columns:1fr}.guru-panel-head{flex-direction:column}.lb-header,.lb-baris{overflow:hidden}.lb-baris span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}
+</style>
+</head>
+<body>
+<div class="bg-particles" aria-hidden="true"></div>
+<section id="layarBeranda" class="layar layar-hero"><button id="btnTema" class="btn-tema" type="button">☀️</button><div class="hero-inner">
+<p class="eyebrow">QUANTA · CHALLENGE ARENA</p><h1 class="hero-title">Uji kemampuanmu.<br><span style="color:var(--primary2)">Taklukkan fungsi kuadrat.</span></h1><p class="hero-sub">Pilih level, kejar waktu, kumpulkan poin, dan buka hasil lengkapmu setelah seluruh tantangan selesai.</p>
+<div class="hero-badges"><span class="badge">⚡ Mode Challenge</span><span class="badge">⏱ 10–30 Menit</span><span class="badge">🏆 Leaderboard</span><span class="badge">🧠 Feedback Lengkap</span></div>
+<div class="hero-choice"><button id="btnKeCara" class="btn-choice"><span class="choice-icon">📖</span><span><span class="choice-title">Cara Bermain</span><span class="choice-desc">Pahami aturan & sistem poin</span></span></button><button id="btnKeDaftar" class="btn-choice btn-choice-primary"><span class="choice-icon">🚀</span><span><span class="choice-title">Mulai Tantangan</span><span class="choice-desc">Masuk arena sekarang</span></span></button></div><button id="btnKeLeaderboard" class="btn-ghost btn-lb-awal">🏆 Lihat Leaderboard</button>
+</div></section>
+<section id="layarCara" class="layar layar-scroll hidden"><div class="scroll-inner"><button id="btnDariBeranda" class="btn-kembali">← Beranda</button><p class="eyebrow">HOW TO PLAY</p><h2 class="section-title">Cara Bermain</h2><p class="section-sub">Semakin tinggi level, semakin banyak soal dan semakin besar bobot poinnya.</p><div class="cara-grid"><div class="cara-card"><span class="cara-icon">🎯</span><h3>1. Pilih level</h3><p>Mudah, Sedang, atau Sulit. Setiap level memiliki komposisi, waktu, dan bobot poin berbeda.</p></div><div class="cara-card"><span class="cara-icon">🧩</span><h3>2. Kerjakan</h3><p>Pilih nomor soal melalui panel navigasi. Kamu dapat berpindah ke soal lain sebelum mengumpulkan jawaban.</p></div><div class="cara-card"><span class="cara-icon">⏱️</span><h3>3. Kejar waktu</h3><p>Timer terus berjalan. Ketika waktu habis, tantangan otomatis dikumpulkan.</p></div><div class="cara-card"><span class="cara-icon">🧠</span><h3>4. Pelajari hasil</h3><p>Feedback tidak dibocorkan di tengah permainan. Setelah selesai, semua jawaban dan penjelasannya terbuka.</p></div></div><div class="poin-tabel"><h3>⚔️ Sistem Poin</h3><div class="poin-row"><span>🌱 Mudah — 20 PG</span><span class="poin-val">PG +5</span></div><div class="poin-row"><span>🔥 Sedang — 15 PG + 5 Esai</span><span class="poin-val">PG +8 · Esai +16</span></div><div class="poin-row"><span>💎 Sulit — 20 PG + 10 Esai</span><span class="poin-val">PG +10 · Esai +20</span></div><div class="poin-row"><span>⚡ Bonus waktu</span><span class="poin-val">hingga +20</span></div></div><button id="btnMulaiDariCara" class="btn-primary btn-besar">Mulai Tantangan →</button></div></section>
+<section id="layarDaftar" class="layar layar-scroll hidden"><div class="scroll-inner scroll-narrow"><button id="btnDariDaftar" class="btn-kembali">← Beranda</button><p class="eyebrow">STEP 1</p><h2 class="section-title">Siapa penantangnya?</h2><p class="section-sub">Nama akan tampil di hasil dan leaderboard.</p><div class="form-group"><label for="inputNama">Nama Siswa</label><input id="inputNama" maxlength="30" autocomplete="off" placeholder="Tulis namamu di sini..."><p id="pesanNama" class="pesan-error hidden"></p></div><button id="btnKeLevel" class="btn-primary btn-besar btn-full">Lanjut Pilih Level →</button></div></section>
+<section id="layarLevel" class="layar layar-scroll hidden"><div class="scroll-inner"><button id="btnDariLevel" class="btn-kembali">← Nama</button><p class="eyebrow">STEP 2</p><h2 class="section-title">Pilih medanmu.</h2><p class="section-sub" id="sapaanLevel"></p><div class="level-grid">
+<button class="level-card" data-level="mudah"><span class="level-icon">🌱</span><span class="level-nama">Mudah</span><span class="level-detail">10 menit · 20 pilihan ganda</span><div class="level-poin-max">Maks. <b>120</b> poin</div><ul class="level-ciri"><li>Konsep dasar grafik</li><li>Titik puncak & sumbu simetri</li><li>Akar dan titik potong</li></ul></button>
+<button class="level-card level-card-mid" data-level="sedang"><span class="level-icon">🔥</span><span class="level-nama">Sedang</span><span class="level-detail">20 menit · 15 PG + 5 esai</span><div class="level-poin-max">Maks. <b>220</b> poin</div><ul class="level-ciri"><li>Diskriminan & range</li><li>Koefisien bervariasi</li><li>Penalaran singkat</li></ul></button>
+<button class="level-card level-card-hard" data-level="sulit"><span class="level-icon">💎</span><span class="level-nama">Sulit</span><span class="level-detail">30 menit · 20 PG + 10 esai</span><div class="level-poin-max">Maks. <b>420</b> poin</div><ul class="level-ciri"><li>Parameter & Vieta</li><li>Kondisi grafik</li><li>Penalaran dan pembuktian singkat</li></ul></button>
+</div></div></section>
+<section id="layarArena" class="layar hidden"><div class="arena-topbar"><div class="arena-info"><span id="arenaNama" class="arena-nama"></span><span id="arenaLevel" class="arena-badge-level"></span></div><div id="arenaTimer" class="arena-timer">10:00</div><div class="arena-skor"><span class="arena-skor-label">POIN</span><span id="arenaPoin" class="arena-skor-val">0</span></div></div><div class="arena-progress-wrap"><div class="arena-progress-track"><div id="arenaProgressBar" class="arena-progress-bar"></div></div><div class="arena-meta"><span id="arenaProgresLabel">Soal 1 / 20</span><span id="arenaTerjawabLabel">Terjawab 0</span></div></div><div class="arena-layout"><div id="arenaSoalBox" class="arena-soal-box card"><p id="soalNomor" class="soal-nomor">SOAL 1</p><p id="soalTeks" class="soal-teks"></p><p id="soalFungsi" class="soal-fungsi hidden"></p><div id="kotakMCQ" class="kotak-mcq hidden" aria-label="Pilihan jawaban"></div><div id="kotakIsian" class="kotak-isian hidden"><label for="inputJawaban" class="answer-label">✍️ Tulis jawaban dan langkah pengerjaanmu</label><textarea id="inputJawaban" placeholder="Tulis langkah, perhitungan, atau alasanmu di sini..."></textarea><small class="answer-note">Jawaban esai akan dinilai berdasarkan ketepatan konsep dan unsur jawaban yang ditentukan.</small></div><button id="btnSoalBerikut" class="btn-primary btn-next hidden">Soal Berikutnya →</button></div><aside class="arena-side card"><h3>🧭 Navigasi</h3><div id="navSoal" class="nav-soal"></div><p class="side-note">Hijau = sudah dijawab. Ungu = soal aktif. Kamu bebas berpindah nomor.</p><div class="submit-area"><button id="btnKumpulkan" class="btn-primary btn-full">🏁 Kumpulkan Tantangan</button></div></aside></div></section>
+<section id="layarHasil" class="layar layar-scroll hidden"><div class="scroll-inner hasil-wrap"><div class="hasil-head"><div id="hasilBadge" class="hasil-badge">🏆</div><p class="eyebrow">CHALLENGE COMPLETE</p><h2 id="hasilJudul" class="section-title">Selesai!</h2><p id="hasilSub" class="section-sub" style="margin-left:auto;margin-right:auto"></p></div><div class="hasil-grid"><div class="hasil-stat"><span id="hasilPoin" class="hasil-stat-val">0</span><span class="hasil-stat-label">Total Poin</span></div><div class="hasil-stat"><span id="hasilBenar" class="hasil-stat-val">0/0</span><span class="hasil-stat-label">Benar</span></div><div class="hasil-stat"><span id="hasilNilai" class="hasil-stat-val">0</span><span class="hasil-stat-label">Nilai</span></div><div class="hasil-stat"><span id="hasilBonus" class="hasil-stat-val">+0</span><span class="hasil-stat-label">Bonus Waktu</span></div></div><div id="pesanFirebase" class="firebase-status hidden"></div><div class="review-wrap"><h3>🧠 Review Jawaban & Pembahasan</h3><p class="section-sub" style="font-size:14px">Periksa soal yang salah untuk mengetahui letak kesalahan dan cara memperoleh jawaban yang benar.</p><div id="reviewList"></div></div><div class="hasil-actions"><button id="btnLihatLeaderboard" class="btn-primary btn-besar btn-full">🏆 Lihat Leaderboard</button><button id="btnMainLagi" class="btn-ghost btn-full">↺ Main Lagi</button></div></div></section>
+<section id="layarGuruLogin" class="layar layar-scroll hidden"><div class="scroll-inner guru-login"><button id="btnDariGuruLogin" class="btn-kembali">← Beranda</button><div class="guru-login-card card"><div class="guru-lock-icon">🔐</div><p class="eyebrow">TEACHER ACCESS</p><h2 class="section-title" style="font-size:42px">Akses Guru</h2><p class="section-sub" style="font-size:14px">Leaderboard dan dashboard nilai hanya dapat dibuka dengan kunci akses guru.</p><div class="form-group"><label for="inputKunciGuru">Kunci Akses Guru</label><input id="inputKunciGuru" type="password" autocomplete="off" placeholder="Masukkan kunci akses..."><p id="pesanKunciGuru" class="guru-error hidden"></p></div><div class="guru-login-actions"><button id="btnBatalGuru" class="btn-ghost btn-full">Batal</button><button id="btnMasukGuru" class="btn-primary btn-full">🔓 Buka Leaderboard</button></div></div></div></section>
+<section id="layarLeaderboard" class="layar layar-scroll hidden"><div class="scroll-inner"><button id="btnDariLeaderboard" class="btn-kembali">← Beranda</button><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap"><div><p class="eyebrow">LIVE SCOREBOARD · GURU</p><h2 class="section-title">Leaderboard</h2><p class="section-sub">Dashboard nilai bersifat privat. Skor diurutkan dari poin tertinggi. Jika sama, waktu pengerjaan yang lebih singkat berada lebih atas.</p></div><span class="guru-unlocked">✓ Akses Guru Aktif</span></div><div class="lb-tab-row"><button class="lb-tab aktif" data-level="mudah">🌱 Mudah</button><button class="lb-tab" data-level="sedang">🔥 Sedang</button><button class="lb-tab" data-level="sulit">💎 Sulit</button></div><div id="lbKonten"><p>Memuat data…</p></div><p class="lb-note">🔴 Update otomatis ketika ada pemain baru.</p><div class="guru-panel"><div class="guru-panel-head"><div><h3>⚙️ Dashboard Guru</h3><p>Kelola data nilai leaderboard dan impor data dari Excel. Pilih level melalui tab di atas sebelum melakukan aksi.</p></div></div><div class="guru-actions"><button id="btnHapusLevel" class="btn-danger">🗑️ Hapus Nilai Level Ini</button><button id="btnHapusSemua" class="btn-danger">⚠️ Hapus Semua Nilai</button><button id="btnUploadExcel" class="btn-excel">📥 Upload Excel</button></div><input id="inputExcel" type="file" accept=".xlsx,.xls,.csv" class="hidden"><div class="lb-import-info">Format kolom Excel yang disarankan: <b>Nama, Poin, Benar, Total, Durasi, Nilai, Bonus Waktu</b>. Data akan masuk ke level yang sedang dipilih. File tidak dikirim ke server lain; isinya diproses di browser lalu disimpan ke Firebase.</div><div id="pesanGuruDashboard" class="firebase-status hidden"></div></div></div></section>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script>
+/* QUANTA script embedded for reliable local/file preview */
+/* ============================================================
+   QUANTA — MODE TANTANGAN
+   Versi: 2.0 — Challenge Arena + Final Feedback
+   ============================================================ */
+
+const GURU_ACCESS_KEY = "QUANTA-GURU-2026";
+
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyCTPi6WgelHqFBHUiMy9ypAgZSN7k2Z8-k",
+  authDomain: "questika-quanta.firebaseapp.com",
+  databaseURL: "https://questika-quanta-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "questika-quanta",
+  storageBucket: "questika-quanta.firebasestorage.app",
+  messagingSenderId: "87574752514",
+  appId: "1:87574752514:web:19a9a3f0e1c3d8a5b9c2e6"
+};
+
+/* ============================================================
+   PEMBENTUK SOAL
+   ============================================================ */
+function mcq(teks, fungsi, pilihan, jawaban, penjelasan){
+  return { teks, fungsi: fungsi || "", tipe:"mcq", pilihan, jawaban, penjelasan };
+}
+function essay(teks, fungsi, jawabanTeks, keywords, penjelasan){
+  return { teks, fungsi: fungsi || "", tipe:"esai", jawabanTeks, keywords, penjelasan };
+}
+function opsiJawaban(benar, variasi){
+  const vals = [benar, ...variasi];
+  return [...new Set(vals)].slice(0,4);
+}
+
+/* ============================================================
+   BANK SOAL — 20 / 20 / 30
+   Semua soal dapat dinilai otomatis.
+   ============================================================ */
+const BANK_SOAL = {
+  mudah: [
+    mcq("Jika y = x² + 2x − 3, ke arah mana parabola terbuka?","y = x² + 2x − 3",["Ke atas","Ke bawah","Ke kanan","Ke kiri"],0,"Koefisien x² adalah a = 1 > 0, sehingga parabola terbuka ke atas."),
+    mcq("Sumbu simetri parabola berikut adalah…","y = x² − 6x + 5",["x = 2","x = 3","x = 4","x = 5"],1,"Gunakan x = −b/(2a). Dengan a = 1 dan b = −6, diperoleh x = 3."),
+    mcq("Titik potong grafik dengan sumbu Y adalah…","y = x² − 4x + 3",["(0, 3)","(3, 0)","(0, −3)","(−3, 0)"],0,"Pada sumbu Y, x = 0. Maka y = 3 sehingga titiknya (0, 3)."),
+    mcq("Titik puncak parabola y = x² − 4x + 1 adalah…","y = x² − 4x + 1",["(2, −3)","(−2, 3)","(2, 3)","(4, −3)"],0,"xₚ = 2. Substitusi x = 2 memberi y = 4 − 8 + 1 = −3, jadi (2, −3)."),
+    mcq("Jika diskriminan suatu fungsi kuadrat bernilai 0, grafiknya…","D = 0",["Tidak menyentuh sumbu X","Menyinggung sumbu X di satu titik","Memotong sumbu X di dua titik","Selalu berada di bawah sumbu X"],1,"D = 0 berarti persamaan mempunyai satu akar real kembar, sehingga parabola menyinggung sumbu X."),
+    mcq("Akar-akar dari x² − 5x + 6 = 0 adalah…","x² − 5x + 6 = 0",["1 dan 6","2 dan 3","−2 dan −3","1 dan 5"],1,"x² − 5x + 6 = (x − 2)(x − 3), sehingga x = 2 dan x = 3."),
+    mcq("Sumbu simetri dari y = x² + 4x − 5 adalah…","y = x² + 4x − 5",["x = −4","x = −2","x = 2","x = 4"],1,"x = −b/(2a) = −4/2 = −2."),
+    mcq("Nilai minimum dari y = x² − 2x + 3 adalah…","y = x² − 2x + 3",["1","2","3","4"],1,"xₚ = 1 dan yₚ = 1 − 2 + 3 = 2. Karena a > 0, nilai ini merupakan minimum."),
+    mcq("Grafik y = −x² + 4x − 3 terbuka…","y = −x² + 4x − 3",["ke atas","ke bawah","ke kanan","ke kiri"],1,"a = −1 < 0, sehingga parabola terbuka ke bawah."),
+    mcq("Titik potong sumbu X y = x² − x − 6 adalah…","y = x² − x − 6",["x = −2 dan 3","x = 2 dan −3","x = 1 dan 6","x = −1 dan 6"],0,"Faktorkan menjadi (x − 3)(x + 2) = 0. Jadi x = 3 dan x = −2."),
+    mcq("Berapakah nilai diskriminan y = x² − 5x + 6?","y = x² − 5x + 6",["0","1","2","5"],1,"D = b² − 4ac = 25 − 24 = 1."),
+    mcq("Jika a > 0 pada y = ax² + bx + c, maka titik puncaknya merupakan…","y = ax² + bx + c",["nilai maksimum","nilai minimum","titik potong Y","selalu akar"],1,"a > 0 membuat parabola terbuka ke atas, sehingga titik puncak adalah nilai minimum."),
+    mcq("Nilai y ketika x = 0 pada y = 2x² − 3x + 7 adalah…","y = 2x² − 3x + 7",["−7","0","3","7"],3,"Substitusi x = 0 menghasilkan y = 7. Jadi titik potong Y adalah (0, 7)."),
+    mcq("Manakah fungsi yang membuka ke bawah?","",["y = x² + 2x","y = 2x² − 1","y = −x² + 4x","y = 3x² + 1"],2,"Fungsi membuka ke bawah jika koefisien a negatif. Hanya −x² + 4x yang memiliki a < 0."),
+    mcq("Titik puncak y = x² + 2x − 3 adalah…","y = x² + 2x − 3",["(−1, −4)","(1, −4)","(−1, 4)","(1, 4)"],0,"xₚ = −2/2 = −1. yₚ = 1 − 2 − 3 = −4."),
+    mcq("Jumlah akar persamaan x² − 7x + 10 = 0 adalah…","x² − 7x + 10 = 0",["5","7","10","17"],1,"Dengan Vieta, x₁ + x₂ = −b/a = 7."),
+    mcq("Hasil kali akar x² − 7x + 10 = 0 adalah…","x² − 7x + 10 = 0",["−10","−7","7","10"],3,"Dengan Vieta, x₁x₂ = c/a = 10."),
+    mcq("Parabola y = x² + 2x + 1 menyentuh sumbu X di…","y = x² + 2x + 1",["x = −1","x = 0","x = 1","x = 2"],0,"y = (x + 1)², sehingga akar kembarnya adalah x = −1."),
+    mcq("Jika D > 0, grafik fungsi kuadrat memiliki…","D > 0",["dua titik potong dengan sumbu X","satu titik potong dengan sumbu X","tidak ada titik potong dengan sumbu X","tidak memiliki titik puncak"],0,"D > 0 berarti terdapat dua akar real berbeda, sehingga grafik memotong sumbu X di dua titik."),
+    mcq("Nilai maksimum y = −x² + 6x − 5 adalah…","y = −x² + 6x − 5",["3","4","5","6"],1,"xₚ = 3. yₚ = −9 + 18 − 5 = 4. Karena a < 0, nilai 4 adalah maksimum.")
+  ],
+
+  sedang: [
+    mcq("Diskriminan dari y = 2x² − 4x + 2 adalah…","y = 2x² − 4x + 2",["−4","0","4","8"],1,"D = (−4)² − 4(2)(2) = 16 − 16 = 0."),
+    mcq("Titik puncak y = −x² + 4x − 1 adalah…","y = −x² + 4x − 1",["(2, 3)","(−2, −3)","(2, −3)","(4, 1)"],0,"xₚ = −4/(−2) = 2. yₚ = −4 + 8 − 1 = 3."),
+    mcq("Sumbu simetri y = 3x² − 6x + 1 adalah…","y = 3x² − 6x + 1",["x = −2","x = −1","x = 1","x = 2"],2,"x = −b/(2a) = 6/6 = 1."),
+    mcq("Range fungsi y = −2x² + 4x − 1 adalah…","y = −2x² + 4x − 1",["y ≥ 1","y ≤ 1","y ≥ −1","semua real"],1,"Titik puncak (1, 1) dan parabola terbuka ke bawah, sehingga y ≤ 1."),
+    mcq("Nilai minimum y = 2x² − 8x + 9 adalah…","y = 2x² − 8x + 9",["−1","0","1","2"],2,"xₚ = 2 dan yₚ = 8 − 16 + 9 = 1."),
+    mcq("Jika D < 0, grafik fungsi kuadrat…","D < 0",["memotong X dua titik","menyinggung X satu titik","tidak memotong sumbu X","selalu sejajar X"],2,"D < 0 berarti tidak ada akar real, sehingga grafik tidak memotong sumbu X."),
+    mcq("Akar-akar 2x² − 7x + 3 = 0 adalah…","2x² − 7x + 3 = 0",["3 dan 1/2","1 dan 3","−3 dan −1/2","2 dan 3/4"],0,"D = 25. x = (7 ± 5)/4, sehingga x = 3 dan x = 1/2."),
+    mcq("Titik potong Y dari y = −3x² + 2x − 5 adalah…","y = −3x² + 2x − 5",["(0, 5)","(0, −5)","(−5, 0)","(5, 0)"],1,"Saat x = 0, y = −5. Jadi titik potong Y adalah (0, −5)."),
+    mcq("Nilai maksimum y = −(x − 2)² + 5 adalah…","y = −(x − 2)² + 5",["2","3","4","5"],3,"Bentuk vertex langsung menunjukkan titik puncak (2, 5). Karena a < 0, y maksimum = 5."),
+    mcq("Sumbu simetri y = 2x² − 12x + 7 adalah…","y = 2x² − 12x + 7",["x = 2","x = 3","x = 4","x = 6"],1,"x = 12/(2·2) = 3."),
+    mcq("Agar x² + bx + 9 mempunyai tepat satu akar, b harus memenuhi…","x² + bx + 9",["b = 4 saja","b = 6 atau −6","b = 8 saja","b = 9 saja"],1,"Tepat satu akar berarti D = 0: b² − 36 = 0, sehingga b = ±6."),
+    mcq("Nilai maksimum y = −2(x + 1)² + 8 adalah…","y = −2(x + 1)² + 8",["−2","1","6","8"],3,"Titik puncak adalah (−1, 8). Karena terbuka ke bawah, nilai maksimum = 8."),
+    mcq("Jika y = x² − 4x + k menyinggung sumbu X, nilai k adalah…","y = x² − 4x + k",["2","3","4","8"],2,"Syarat singgung D = 0: 16 − 4k = 0 sehingga k = 4."),
+    mcq("Fungsi y = 2x² + bx + 8 memiliki D = 0. Nilai |b| adalah…","y = 2x² + bx + 8",["4","6","8","16"],2,"D = b² − 64 = 0, maka b = ±8 dan |b| = 8."),
+    mcq("Titik puncak y = 2x² − 8x + 11 adalah…","y = 2x² − 8x + 11",["(2, 3)","(4, 3)","(2, −3)","(−2, 3)"],0,"xₚ = 8/4 = 2 dan yₚ = 8 − 16 + 11 = 3."),
+    essay("Jelaskan langkah menentukan titik puncak fungsi kuadrat y = x² − 6x + 5.","y = x² − 6x + 5","Titik puncak adalah (3, −4). Langkah: xₚ = −b/(2a) = 3, lalu yₚ = 9 − 18 + 5 = −4.",["3","-4","titik puncak","x_p","yp"],"Titik puncak diperoleh dari xₚ = −b/(2a), kemudian nilai xₚ disubstitusikan ke fungsi untuk memperoleh yₚ."),
+    essay("Jelaskan hubungan nilai diskriminan dengan jumlah titik potong grafik terhadap sumbu X.","D = b² − 4ac","D > 0 berarti dua titik potong; D = 0 berarti satu titik potong/menyinggung; D < 0 berarti tidak ada titik potong real.",["d > 0","d = 0","d < 0","dua","satu","tidak ada"],"Diskriminan menentukan banyaknya akar real: positif dua akar berbeda, nol satu akar kembar, negatif tidak ada akar real."),
+    essay("Tentukan range fungsi y = −x² + 4x − 3 dan jelaskan caranya.","y = −x² + 4x − 3","Range adalah y ≤ 1. Titik puncak (2, 1) dan parabola terbuka ke bawah.",["y ≤ 1","1","titik puncak","terbuka ke bawah"],"xₚ = 2 dan yₚ = 1. Karena a = −1 < 0, 1 adalah nilai maksimum, sehingga range y ≤ 1."),
+    essay("Tentukan akar-akar persamaan 2x² − 5x − 3 = 0 dengan rumus kuadrat.","2x² − 5x − 3 = 0","Akar-akarnya x = 3 dan x = −1/2.",["3","-1/2","-0.5","rumus kuadrat"],"D = 25 + 24 = 49. x = (5 ± 7)/4, sehingga x = 3 atau x = −1/2."),
+    essay("Jelaskan mengapa fungsi y = x² − 4x + 5 tidak memotong sumbu X.","y = x² − 4x + 5","D = 16 − 20 = −4 < 0, sehingga tidak memiliki akar real dan tidak memotong sumbu X.",["-4","d < 0","tidak memiliki akar real","tidak memotong sumbu x"],"Diskriminannya negatif, sehingga persamaan y = 0 tidak memiliki solusi real. Akibatnya grafik tidak memotong sumbu X.")
+  ],
+
+  sulit: [
+    mcq("Nilai minimum y = 3x² − 12x + 11 adalah…","y = 3x² − 12x + 11",["−2","−1","0","1"],1,"xₚ = 2 dan yₚ = 12 − 24 + 11 = −1."),
+    mcq("Titik puncak y = −2x² + 8x − 5 adalah…","y = −2x² + 8x − 5",["(2, 3)","(−2, −5)","(2, −3)","(4, 5)"],0,"xₚ = 2 dan yₚ = −8 + 16 − 5 = 3."),
+    mcq("Diskriminan y = 2x² − 3x + 5 adalah…","y = 2x² − 3x + 5",["−31","−11","11","31"],0,"D = 9 − 40 = −31."),
+    mcq("Jika x₁ dan x₂ akar y = x² − 7x + 10, maka x₁ + x₂ =…","y = x² − 7x + 10",["5","7","10","17"],1,"Vieta: x₁ + x₂ = −b/a = 7."),
+    mcq("Jika x₁ dan x₂ akar y = x² − 7x + 10, maka x₁x₂ =…","y = x² − 7x + 10",["−10","−7","7","10"],3,"Vieta: x₁x₂ = c/a = 10."),
+    mcq("Untuk nilai x manakah y = x² − 4x + 3 bernilai positif?","y = x² − 4x + 3",["x < 1 atau x > 3","1 < x < 3","x < −1 atau x > 3","−3 < x < 1"],0,"Akar 1 dan 3, dan a > 0. Grafik positif di luar interval akar: x < 1 atau x > 3."),
+    mcq("Sumbu simetri y = −3(x − 2)² + 5 adalah…","y = −3(x − 2)² + 5",["x = −3","x = −2","x = 2","x = 5"],2,"Bentuk vertex y = a(x − h)² + k memiliki sumbu simetri x = h = 2."),
+    mcq("Agar y = x² − 4x + k selalu positif untuk semua x, syarat k adalah…","y = x² − 4x + k",["k > 2","k > 3","k > 4","k ≥ 4"],2,"Selalu positif memerlukan D < 0: 16 − 4k < 0, sehingga k > 4."),
+    mcq("Nilai y titik puncak y = −(x + 3)² + 7 adalah…","y = −(x + 3)² + 7",["−7","−3","3","7"],3,"Titik puncak adalah (−3, 7), jadi koordinat y-nya 7."),
+    mcq("Fungsi y = x² − 2px + (p + 2) mempunyai akar kembar jika p =…","y = x² − 2px + (p + 2)",["1 saja","2 atau −1","−2 atau 1","2 saja"],1,"D = 4p² − 4p − 8 = 0 → p² − p − 2 = 0 → p = 2 atau −1."),
+    mcq("Nilai a pada y = ax² − 4x − 1 jika sumbu simetrinya x = 1 adalah…","y = ax² − 4x − 1",["1","2","3","4"],1,"1 = −(−4)/(2a) = 2/a, sehingga a = 2."),
+    mcq("Titik potong sumbu X y = −x² + 2x + 3 adalah…","y = −x² + 2x + 3",["−1 dan 3","1 dan 3","−3 dan 1","−1 dan −3"],0,"−x² + 2x + 3 = 0 setara x² − 2x − 3 = 0 = (x−3)(x+1), sehingga x = 3 dan −1."),
+    mcq("Nilai c agar y = x² − 6x + c menyinggung sumbu X adalah…","y = x² − 6x + c",["6","8","9","12"],2,"D = 36 − 4c = 0 → c = 9."),
+    mcq("Fungsi y = 2x² + bx + 8 mempunyai D = 0. Nilai b yang mungkin adalah…","y = 2x² + bx + 8",["−8 saja","8 saja","−8 atau 8","−4 atau 4"],2,"b² − 64 = 0, sehingga b = ±8."),
+    mcq("Parabola y = 2x² − 8x + 11 mempunyai titik puncak…","y = 2x² − 8x + 11",["(2, 3)","(4, 3)","(2, −3)","(−2, 3)"],0,"xₚ = 2 dan yₚ = 3."),
+    mcq("Jika grafik y = x² + bx + 4 menyinggung sumbu X, nilai b adalah…","y = x² + bx + 4",["−4 atau 4","−2 atau 2","4 saja","2 saja"],0,"D = b² − 16 = 0, maka b = ±4."),
+    mcq("Nilai minimum y = 2(x − 3)² − 7 adalah…","y = 2(x − 3)² − 7",["−7","−3","3","7"],0,"Bentuk vertex menunjukkan titik puncak (3, −7), dan a > 0 sehingga −7 adalah minimum."),
+    mcq("Jika akar-akar persamaan x² − 10x + q = 0 berjumlah 10 dan hasil kalinya 21, nilai q adalah…","x² − 10x + q = 0",["10","21","−21","31"],1,"Dengan Vieta, hasil kali akar = q. Karena diberikan 21, maka q = 21."),
+    mcq("Agar grafik y = x² + 2x + k berada seluruhnya di atas sumbu X, syarat k adalah…","y = x² + 2x + k",["k > 0","k > 1","k > 2","k ≥ 1"],1,"D < 0: 4 − 4k < 0 → k > 1. Karena syaratnya di atas, bukan menyentuh, harus k > 1."),
+    mcq("Persamaan kuadrat yang memiliki akar 2 dan −3 adalah…","",["x² + x − 6 = 0","x² − x − 6 = 0","x² + 5x + 6 = 0","x² − 5x + 6 = 0"],0,"Jika akar 2 dan −3, maka (x−2)(x+3) = x² + x − 6."),
+    essay("Tentukan titik puncak, sumbu simetri, dan nilai minimum y = 2x² − 8x + 1. Jelaskan langkahnya.","y = 2x² − 8x + 1","Titik puncak (2, −7), sumbu simetri x = 2, nilai minimum −7.",["2","-7","x = 2","titik puncak","minimum"],"xₚ = 8/4 = 2. yₚ = 2(4) − 16 + 1 = −7. Karena a > 0, minimum = −7."),
+    essay("Tentukan semua nilai k agar y = x² − 6x + k mempunyai dua titik potong dengan sumbu X.","y = x² − 6x + k","D > 0: 36 − 4k > 0 sehingga k < 9.",["d > 0","k < 9","dua titik potong","36","4k"],"D harus positif karena dua akar real berbeda. 36 − 4k > 0 menghasilkan k < 9."),
+    essay("Gunakan rumus Vieta untuk menentukan jumlah dan hasil kali akar y = 3x² − 11x + 6.","y = 3x² − 11x + 6","Jumlah akar = 11/3 dan hasil kali akar = 2.",["11/3","2","jumlah akar","hasil kali","vieta"],"Vieta memberi x₁ + x₂ = −b/a = 11/3 dan x₁x₂ = c/a = 6/3 = 2."),
+    essay("Jelaskan syarat agar y = x² + 4x + k tidak memiliki titik potong dengan sumbu X.","y = x² + 4x + k","D < 0: 16 − 4k < 0, sehingga k > 4.",["d < 0","k > 4","16","tidak memiliki titik potong"],"Tidak ada titik potong berarti tidak ada akar real, sehingga D < 0. Maka 16 − 4k < 0 dan k > 4."),
+    essay("Tentukan persamaan fungsi kuadrat yang memiliki titik puncak (2, −3) dan melalui titik (0, 5).", "Titik puncak (2, −3), melalui (0, 5)","Bentuk y = a(x − 2)² − 3. Substitusi (0,5): 5 = 4a − 3 sehingga a = 2. Jadi y = 2(x − 2)² − 3.",["2(x - 2)^2 - 3","a = 2","(2, -3)","5 = 4a - 3"],"Gunakan bentuk vertex. Substitusi titik (0,5) menghasilkan a = 2, sehingga persamaan y = 2(x−2)² − 3."),
+    essay("Tentukan nilai p agar persamaan x² − 2px + p + 3 = 0 memiliki dua akar real berbeda.","x² − 2px + p + 3 = 0","D > 0: 4p² − 4p − 12 > 0 → p² − p − 3 > 0 → p < (1 − √13)/2 atau p > (1 + √13)/2.",["d > 0","p <","p >","sqrt(13)","(1 -"],"Syarat dua akar real berbeda adalah D > 0. Setelah dibagi 4, p² − p − 3 > 0, sehingga p < (1−√13)/2 atau p > (1+√13)/2."),
+    essay("Tentukan interval x ketika y = −x² + 6x − 8 bernilai positif.","y = −x² + 6x − 8","Akar-akar 2 dan 4. Karena a < 0, fungsi positif untuk 2 < x < 4.",["2 < x < 4","2","4","a < 0","positif"],"−x² + 6x − 8 = 0 memiliki akar 2 dan 4. Parabola terbuka ke bawah, jadi nilainya positif di antara kedua akar."),
+    essay("Sebuah parabola mempunyai titik puncak (−1, 4), terbuka ke atas, dan melalui titik (1, 12). Tentukan persamaannya.","Titik puncak (−1, 4), melalui (1, 12)","y = 2(x + 1)² + 4.",["2(x + 1)^2 + 4","a = 2","(-1, 4)","12"],"Bentuk vertex y = a(x+1)²+4. Substitusi (1,12): 12 = 4a + 4, sehingga a = 2."),
+    essay("Jelaskan mengapa y = 2x² − 4x + 5 selalu positif untuk semua bilangan real x.","y = 2x² − 4x + 5","D = 16 − 40 = −24 < 0 dan a > 0, sehingga grafik tidak memotong sumbu X dan seluruh nilai y positif.",["-24","d < 0","a > 0","selalu positif","tidak memotong"],"Karena D < 0 tidak ada akar real. Dengan a > 0 parabola terbuka ke atas, sehingga seluruh grafik berada di atas sumbu X."),
+    essay("Tentukan nilai m agar titik (1, 2) terletak pada grafik y = x² + mx + 3.","y = x² + mx + 3","2 = 1 + m + 3, sehingga m = −2.",["-2","m = -2","2 = 1 + m + 3"],"Substitusi x = 1 dan y = 2: 2 = 1 + m + 3, jadi m = −2."),
+  ]
+};
+
+const LEVEL_CONFIG = {
+  mudah: { label:"Mudah", waktu:600, jumlah:20, jumlahPG:20, jumlahEsai:0, poinMCQ:5, poinEsai:0, bonusMaks:20 },
+  sedang:{ label:"Sedang", waktu:1200, jumlah:20, jumlahPG:15, jumlahEsai:5, poinMCQ:8, poinEsai:16, bonusMaks:20 },
+  sulit: { label:"Sulit", waktu:1800, jumlah:30, jumlahPG:20, jumlahEsai:10, poinMCQ:10, poinEsai:20, bonusMaks:20 }
+};
+
+let db = null;
+let state = {
+  nama:"", level:"", soal:[], nomorSoal:0, poin:0, benar:0,
+  waktuSisa:0,totalWaktu:0,deadline:0,timerInterval:null,lbLevel:"mudah",lbListener:null,
+  jawaban:[], hasilSoal:[], selesai:false, bonusWaktu:0
+};
+
+/* ============================================================ FIREBASE */
+function inisialisasiFirebase(){
+  try{
+    if(typeof firebase === "undefined") return false;
+    const app = firebase.initializeApp(FIREBASE_CONFIG);
+    db = firebase.database(app);
+    return true;
+  }catch(e){ console.warn("[QUANTA] Firebase:",e.message); return false; }
+}
+async function simpanKeFirebase(payload){
+  if(!db){ tampilkanStatusFirebase("⚠️ Firebase belum terhubung. Skor tidak tersimpan ke leaderboard.",false); return; }
+  try{
+    await db.ref(`tantangan/leaderboard/${state.level}`).push(payload);
+    tampilkanStatusFirebase("✅ Skor berhasil tersimpan ke leaderboard!",true);
+  }catch(e){ tampilkanStatusFirebase("❌ Gagal menyimpan skor: "+e.message,false); }
+}
+function tampilkanStatusFirebase(pesan,sukses){
+  const el=pilih("pesanFirebase"); el.textContent=pesan; el.className="firebase-status "+(sukses?"ok":"error"); el.classList.remove("hidden");
+}
+function muatLeaderboard(level){
+  if(!db){ pilih("lbKonten").innerHTML=`<p>⚠️ Firebase belum terhubung.</p>`; return; }
+  if(state.lbListener) db.ref(`tantangan/leaderboard/${state.lbLevel}`).off("value",state.lbListener);
+  state.lbLevel=level; pilih("lbKonten").innerHTML=`<p>Memuat data…</p>`;
+  const ref=db.ref(`tantangan/leaderboard/${level}`).orderByChild("poin").limitToLast(20);
+  state.lbListener=ref.on("value",snap=>{
+    const data=snap.val();
+    if(!data){ pilih("lbKonten").innerHTML=`<p>Belum ada pemain di level ini. Jadilah yang pertama! 🚀</p>`; return; }
+    const daftar=Object.values(data).sort((a,b)=>b.poin-a.poin || (a.durasi||99999)-(b.durasi||99999));
+    renderTabelLeaderboard(daftar);
+  },err=>pilih("lbKonten").innerHTML=`<p>Gagal memuat data: ${escHTML(err.message)}</p>`);
+}
+function renderTabelLeaderboard(daftar){
+  const cfg=LEVEL_CONFIG[state.lbLevel];
+  let html=`<div class="lb-header"><span>#</span><span>Nama</span><span>Poin</span><span>Benar</span><span>Durasi</span></div>`;
+  daftar.forEach((d,i)=>{
+    const rank=i+1, medal=rank===1?"🥇":rank===2?"🥈":rank===3?"🥉":rank;
+    const durasi=formatWaktu(d.durasi ?? (cfg.waktu-(d.waktuSisa||0)));
+    html+=`<div class="lb-baris"><span class="lb-rank">${medal}</span><span>${escHTML(d.nama)}</span><span class="lb-poin">${d.poin}</span><span>${d.benar}/${d.total}</span><span class="lb-waktu">${durasi}</span></div>`;
+  });
+  pilih("lbKonten").innerHTML=html;
+}
+
+/* ============================================================ NAVIGASI */
+const LAYAR_IDS=["layarBeranda","layarCara","layarDaftar","layarLevel","layarArena","layarHasil","layarGuruLogin","layarLeaderboard"];
+let guruTerautentikasi = false;
+let leaderboardTujuan = "mudah";
+function tampilkanLayar(id){ LAYAR_IDS.forEach(x=>{const el=pilih(x); if(el) el.classList.toggle("hidden",x!==id);}); window.scrollTo(0,0); }
+
+/* ============================================================ GAME */
+function mulaiPermainan(level){
+  const cfg=LEVEL_CONFIG[level];
+  const pg=acak([...BANK_SOAL[level].filter(s=>s.tipe==="mcq")]);
+  const es=acak([...BANK_SOAL[level].filter(s=>s.tipe==="esai")]);
+  state.level=level; state.poin=0; state.benar=0; state.nomorSoal=0; state.waktuSisa=cfg.waktu; state.totalWaktu=cfg.waktu; state.deadline=Date.now()+cfg.waktu*1000; state.bonusWaktu=0; state.selesai=false;
+  state.soal=[...pg.slice(0,cfg.jumlahPG),...es.slice(0,cfg.jumlahEsai)];
+  acak(state.soal); state.jawaban=new Array(state.soal.length).fill(null); state.hasilSoal=[];
+  pilih("arenaNama").textContent=state.nama; pilih("arenaLevel").textContent=cfg.label;
+  tampilkanLayar("layarArena"); renderNavigasiSoal(); tampilkanSoal(); mulaiTimer();
+}
+function tampilkanSoal(){
+  if(state.selesai) return;
+  const soal=state.soal[state.nomorSoal];
+  pilih("soalNomor").textContent=`SOAL ${state.nomorSoal+1} · ${soal.tipe==="mcq"?"PILIHAN GANDA":"ESAI"}`;
+  pilih("soalTeks").textContent=soal.teks;
+  const f=pilih("soalFungsi"); f.textContent=soal.fungsi||""; f.classList.toggle("hidden",!soal.fungsi);
+  const total=state.soal.length, answered=state.jawaban.filter(v=>v!==null && v!=="").length;
+  pilih("arenaProgressBar").style.width=((state.nomorSoal+1)/total*100)+"%";
+  pilih("arenaProgresLabel").textContent=`Soal ${state.nomorSoal+1} / ${total}`;
+  pilih("arenaTerjawabLabel").textContent=`Terjawab ${answered}/${total}`;
+  pilih("arenaPoin").textContent=state.poin;
+  sembunyikan("btnSoalBerikut");
+  const kotakMCQ=pilih("kotakMCQ");
+  const kotakIsian=pilih("kotakIsian");
+  if(soal.tipe==="mcq"){
+    sembunyikan("kotakIsian");
+    tampilkan("kotakMCQ");
+    kotakMCQ.innerHTML="";
+    soal.pilihan.forEach((teksPilihan,i)=>{
+      const btn=document.createElement("button");
+      btn.type="button";
+      btn.className="btn-pilihan";
+      btn.dataset.idx=i;
+      btn.innerHTML=`<span class="option-letter">${String.fromCharCode(65+i)}</span><span class="option-text"></span>`;
+      btn.querySelector(".option-text").textContent=teksPilihan;
+      if(state.jawaban[state.nomorSoal]===i) btn.classList.add("selected");
+      btn.onclick=()=>pilihMCQ(i);
+      kotakMCQ.appendChild(btn);
+    });
+  }else{
+    sembunyikan("kotakMCQ");
+    tampilkan("kotakIsian");
+    const input=pilih("inputJawaban");
+    input.value=state.jawaban[state.nomorSoal]||"";
+    input.disabled=false;
+    input.oninput=()=>{state.jawaban[state.nomorSoal]=input.value;renderNavigasiSoal();};
+  }
+  renderNavigasiSoal();
+}
+function pilihMCQ(idx){ state.jawaban[state.nomorSoal]=idx; document.querySelectorAll(".btn-pilihan").forEach((b,i)=>b.classList.toggle("selected",i===idx)); renderNavigasiSoal(); }
+function renderNavigasiSoal(){
+  const nav=pilih("navSoal"); if(!nav) return; nav.innerHTML="";
+  state.soal.forEach((s,i)=>{const b=document.createElement("button");b.type="button";b.textContent=i+1;b.title=`Soal ${i+1} · ${s.tipe==="mcq"?"Pilihan ganda":"Esai"}`;if(s.tipe==="esai")b.classList.add("esai");if(state.jawaban[i]!==null&&state.jawaban[i]!=="")b.classList.add("terjawab");if(i===state.nomorSoal)b.classList.add("aktif");b.onclick=()=>{state.nomorSoal=i;tampilkanSoal();};nav.appendChild(b);});
+}
+function mulaiTimer(){
+  clearInterval(state.timerInterval);
+  state.deadline=Date.now()+state.waktuSisa*1000;
+  renderTimer();
+  state.timerInterval=setInterval(()=>{
+    const sisa=Math.max(0,state.deadline-Date.now());
+    state.waktuSisa=Math.ceil(sisa/1000);
+    renderTimer();
+    if(sisa<=0){
+      clearInterval(state.timerInterval);
+      state.waktuSisa=0;
+      renderTimer();
+      selesaiPermainan(true);
+    }
+  },250);
+}
+function renderTimer(){
+  const el=pilih("arenaTimer");
+  if(!el)return;
+  el.textContent=formatWaktu(Math.max(0,state.waktuSisa));
+  const p=state.totalWaktu?state.waktuSisa/state.totalWaktu:0;
+  el.className="arena-timer "+(p<=.15?"danger":p<=.35?"warn":"");
+}
+function kumpulkanDenganKonfirmasi(){
+  const belum=state.jawaban.filter(v=>v===null||v==="").length;
+  if(belum>0 && !confirm(`Masih ada ${belum} soal yang belum dijawab. Soal tersebut akan dinilai sebagai tidak dijawab. Tetap kumpulkan?`)) return;
+  selesaiPermainan(false);
+}
+function selesaiPermainan(waktuHabis=false){
+  if(state.selesai) return; state.selesai=true; clearInterval(state.timerInterval);
+  const cfg=LEVEL_CONFIG[state.level]; state.hasilSoal=[]; state.poin=0; state.benar=0;
+  state.soal.forEach((s,i)=>{
+    const raw=state.jawaban[i]; const kosong=raw===null||raw===""; let status=false, skor=0, jawabanSiswa="Tidak dijawab";
+    if(s.tipe==="mcq"){
+      if(!kosong){jawabanSiswa=s.pilihan[raw]??"Tidak dijawab";status=raw===s.jawaban;skor=status?cfg.poinMCQ:0;}
+      state.hasilSoal.push({soal:s,jawabanSiswa,jawabanBenar:s.pilihan[s.jawaban],status,skor});
+    }else{
+      if(!kosong){jawabanSiswa=String(raw);const match=hitungKecocokanEsai(jawabanSiswa,s.keywords);skor=Math.round(cfg.poinEsai*match);status=match>=.8;}
+      state.hasilSoal.push({soal:s,jawabanSiswa,jawabanBenar:s.jawabanTeks,status,skor,match:!kosong?hitungKecocokanEsai(jawabanSiswa,s.keywords):0});
+    }
+    state.poin+=skor;if(status)state.benar++;
+  });
+  state.bonusWaktu=waktuHabis?0:Math.round((state.waktuSisa/state.totalWaktu)*cfg.bonusMaks); state.poin+=state.bonusWaktu;
+  const total=state.soal.length, nilai=Math.round((state.hasilSoal.reduce((a,b)=>a+b.skor,0)/maksPoin(cfg))*100);
+  renderHasil(nilai,total,waktuHabis); tampilkanLayar("layarHasil");
+  simpanKeFirebase({nama:state.nama,poin:state.poin,benar:state.benar,total,waktuSisa:state.waktuSisa,durasi:state.totalWaktu-state.waktuSisa,nilai,timestamp:Date.now()});
+}
+function renderHasil(nilai,total,waktuHabis){
+  let badge="💪",judul="Tetap Berlatih!",sub="Buka pembahasan di bawah untuk melihat bagian yang perlu diperkuat.";
+  if(nilai>=90){badge="🏆";judul="Master Challenge!";sub="Performa sangat kuat. Pertahankan ketelitianmu."}
+  else if(nilai>=75){badge="🔥";judul="Challenge Ditaklukkan!";sub="Hasilmu sudah bagus. Cek pembahasan untuk menyempurnakannya."}
+  else if(nilai>=60){badge="⚡";judul="Makin Dekat!";sub="Dasarmu sudah terbentuk. Pelajari soal yang masih keliru."}
+  if(waktuHabis)sub="Waktu habis. Tidak apa-apa—gunakan pembahasan untuk memperbaiki strategi pengerjaan berikutnya.";
+  pilih("hasilBadge").textContent=badge;pilih("hasilJudul").textContent=judul;pilih("hasilSub").textContent=sub;pilih("hasilPoin").textContent=state.poin;pilih("hasilBenar").textContent=`${state.benar}/${total}`;pilih("hasilNilai").textContent=nilai;pilih("hasilBonus").textContent=`+${state.bonusWaktu}`;sembunyikan("pesanFirebase");
+  const list=pilih("reviewList");list.innerHTML="";
+  state.hasilSoal.forEach((r,i)=>{
+    const div=document.createElement("div");div.className=`review-item ${r.status?"good":"bad"}`;
+    const skorText=r.soal.tipe==="esai"?`+${r.skor} poin · ${Math.round((r.match||0)*100)}% kecocokan`: `+${r.skor} poin`;
+    div.innerHTML=`<div class="review-top"><span>Soal ${i+1} · ${r.soal.tipe==="mcq"?"PG":"ESAI"}</span><span class="${r.status?"status-good":"status-bad"}">${r.status?"✓ Benar":"✕ Perlu diperbaiki"} · ${skorText}</span></div><div class="review-question">${escHTML(r.soal.teks)}</div><div class="review-answer"><b>Jawabanmu:</b> ${escHTML(r.jawabanSiswa)}<br><b>Jawaban benar/model:</b> ${escHTML(r.jawabanBenar)}</div><div class="review-exp"><b>💡 Pembahasan:</b> ${escHTML(r.soal.penjelasan)}</div>`;
+    list.appendChild(div);
+  });
+}
+function hitungKecocokanEsai(jawaban,keywords){
+  const t=normalisasi(jawaban); if(!t)return 0;
+  let hit=0; keywords.forEach(k=>{if(t.includes(normalisasi(k)))hit++;});
+  return keywords.length?Math.min(1,hit/Math.max(2,Math.ceil(keywords.length*.6))):0;
+}
+function normalisasi(s){return String(s).toLowerCase().replace(/−/g,"-").replace(/\s+/g," ").trim();}
+function maksPoin(cfg){return cfg.jumlahPG*cfg.poinMCQ+cfg.jumlahEsai*cfg.poinEsai;}
+
+/* ============================================================ UTILITAS */
+function pilih(id){return document.getElementById(id)}
+function tampilkan(id){pilih(id).classList.remove("hidden")}
+function sembunyikan(id){pilih(id).classList.add("hidden")}
+function formatWaktu(detik){const m=Math.floor(detik/60).toString().padStart(2,"0"),s=(detik%60).toString().padStart(2,"0");return `${m}:${s}`}
+function acak(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]]}return arr}
+function escHTML(str){return String(str??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+
+/* ============================================================ AKSES GURU + DASHBOARD */
+function bukaAksesGuru(level="mudah"){
+  leaderboardTujuan=level||"mudah";
+  if(guruTerautentikasi){
+    tampilkanLayar("layarLeaderboard");
+    aturTabLeaderboard(leaderboardTujuan);
+    muatLeaderboard(leaderboardTujuan);
+    return;
+  }
+  pilih("inputKunciGuru").value="";
+  pilih("pesanKunciGuru").textContent="";
+  sembunyikan("pesanKunciGuru");
+  tampilkanLayar("layarGuruLogin");
+  setTimeout(()=>pilih("inputKunciGuru")?.focus(),80);
+}
+function masukGuru(){
+  const key=pilih("inputKunciGuru").value;
+  if(key===GURU_ACCESS_KEY){
+    guruTerautentikasi=true;
+    sembunyikan("pesanKunciGuru");
+    tampilkanLayar("layarLeaderboard");
+    aturTabLeaderboard(leaderboardTujuan);
+    muatLeaderboard(leaderboardTujuan);
+  }else{
+    pilih("pesanKunciGuru").textContent="Kunci akses salah. Silakan coba lagi.";
+    tampilkan("pesanKunciGuru");
+    pilih("inputKunciGuru").select();
+  }
+}
+function cekAksesGuru(){
+  if(!guruTerautentikasi){bukaAksesGuru(state.level||"mudah");return false;}
+  return true;
+}
+function tampilkanStatusGuru(pesan,sukses=true){
+  const el=pilih("pesanGuruDashboard"); if(!el)return;
+  el.textContent=pesan; el.className="firebase-status "+(sukses?"ok":"error"); el.classList.remove("hidden");
+}
+async function hapusNilaiLevel(){
+  if(!cekAksesGuru()||!db)return;
+  const level=state.lbLevel||"mudah";
+  if(!confirm(`Hapus SEMUA nilai leaderboard level ${LEVEL_CONFIG[level].label}? Data yang dihapus tidak dapat dikembalikan.`))return;
+  try{
+    await db.ref(`tantangan/leaderboard/${level}`).remove();
+    tampilkanStatusGuru(`✅ Semua nilai level ${LEVEL_CONFIG[level].label} berhasil dihapus.`);
+    muatLeaderboard(level);
+  }catch(e){tampilkanStatusGuru(`❌ Gagal menghapus nilai: ${e.message}`,false);}
+}
+async function hapusSemuaNilai(){
+  if(!cekAksesGuru()||!db)return;
+  if(!confirm("HAPUS SEMUA NILAI dari semua level Mudah, Sedang, dan Sulit? Tindakan ini tidak dapat dibatalkan."))return;
+  try{
+    await db.ref("tantangan/leaderboard").remove();
+    tampilkanStatusGuru("✅ Semua data leaderboard dari seluruh level berhasil dihapus.");
+    muatLeaderboard(state.lbLevel||"mudah");
+  }catch(e){tampilkanStatusGuru(`❌ Gagal menghapus semua data: ${e.message}`,false);}
+}
+function normalisasiHeaderExcel(v){return String(v??"").toLowerCase().replace(/[ _-]/g,"").trim();}
+function angkaExcel(v,def=0){
+  if(v===null||v===undefined||v==="")return def;
+  const n=Number(String(v).replace(/,/g,".")); return Number.isFinite(n)?n:def;
+}
+async function prosesUploadExcel(file){
+  if(!cekAksesGuru()||!db||!file)return;
+  if(typeof XLSX==="undefined"){tampilkanStatusGuru("❌ Library Excel belum termuat. Periksa koneksi internet lalu refresh halaman.",false);return;}
+  try{
+    const buffer=await file.arrayBuffer();
+    const wb=XLSX.read(buffer,{type:"array"});
+    const ws=wb.Sheets[wb.SheetNames[0]];
+    const rows=XLSX.utils.sheet_to_json(ws,{defval:""});
+    if(!rows.length)throw new Error("File Excel tidak memiliki data.");
+    const level=state.lbLevel||"mudah";
+    const cfg=LEVEL_CONFIG[level];
+    const entries={};
+    rows.forEach((row,i)=>{
+      const map={}; Object.keys(row).forEach(k=>map[normalisasiHeaderExcel(k)]=row[k]);
+      const nama=String(map.nama||map.namasiswa||map.siswa||"").trim();
+      if(!nama)return;
+      const poin=angkaExcel(map.poin,0);
+      const total=angkaExcel(map.total,cfg.jumlah);
+      const benar=angkaExcel(map.benar,0);
+      const durasi=angkaExcel(map.durasi,0);
+      const nilai=angkaExcel(map.nilai,0);
+      const bonusWaktu=angkaExcel(map.bonuswaktu,0);
+      const key=db.ref(`tantangan/leaderboard/${level}`).push().key;
+      entries[key]={nama,poin,benar,total,durasi,nilai,bonusWaktu,timestamp:Date.now(),sumber:"excel"};
+    });
+    const count=Object.keys(entries).length;
+    if(!count)throw new Error("Tidak ada baris valid. Pastikan ada kolom Nama.");
+    await db.ref(`tantangan/leaderboard/${level}`).update(entries);
+    tampilkanStatusGuru(`✅ ${count} data berhasil di-upload ke leaderboard level ${cfg.label}.`);
+    muatLeaderboard(level);
+  }catch(e){tampilkanStatusGuru(`❌ Upload Excel gagal: ${e.message}`,false);}
+  finally{pilih("inputExcel").value="";}
+}
+
+/* ============================================================ EVENT */
+function aturTabLeaderboard(level){document.querySelectorAll(".lb-tab").forEach(t=>t.classList.toggle("aktif",t.dataset.level===level))}
+function ikatEvent(){
+  pilih("btnTema").onclick=()=>{const dark=document.documentElement.getAttribute("data-theme")==="dark";document.documentElement.setAttribute("data-theme",dark?"light":"dark");pilih("btnTema").textContent=dark?"🌙":"☀️"};
+  pilih("btnKeCara").onclick=()=>tampilkanLayar("layarCara");pilih("btnKeDaftar").onclick=()=>tampilkanLayar("layarDaftar");pilih("btnKeLeaderboard").onclick=()=>bukaAksesGuru("mudah");
+  pilih("btnDariBeranda").onclick=()=>tampilkanLayar("layarBeranda");pilih("btnMulaiDariCara").onclick=()=>tampilkanLayar("layarDaftar");
+  pilih("btnDariDaftar").onclick=()=>tampilkanLayar("layarBeranda");pilih("btnKeLevel").onclick=()=>{const nama=pilih("inputNama").value.trim();if(!nama){tampilkan("pesanNama");pilih("pesanNama").textContent="Nama tidak boleh kosong.";return}sembunyikan("pesanNama");state.nama=nama;pilih("sapaanLevel").textContent=`Hai, ${nama}! Pilih level yang siap kamu taklukkan.`;tampilkanLayar("layarLevel")};
+  pilih("inputNama").onkeydown=e=>{if(e.key==="Enter")pilih("btnKeLevel").click()};pilih("btnDariLevel").onclick=()=>tampilkanLayar("layarDaftar");
+  document.querySelectorAll(".level-card").forEach(b=>b.onclick=()=>mulaiPermainan(b.dataset.level));
+  pilih("btnSoalBerikut").onclick=()=>{if(state.nomorSoal<state.soal.length-1){state.nomorSoal++;tampilkanSoal()}};
+  pilih("btnKumpulkan").onclick=kumpulkanDenganKonfirmasi;
+  pilih("btnLihatLeaderboard").onclick=()=>bukaAksesGuru(state.level);
+  pilih("btnMainLagi").onclick=()=>{pilih("inputNama").value=state.nama;tampilkanLayar("layarDaftar")};
+  pilih("btnDariLeaderboard").onclick=()=>tampilkanLayar("layarBeranda");
+  pilih("btnDariGuruLogin").onclick=()=>tampilkanLayar("layarBeranda");
+  pilih("btnBatalGuru").onclick=()=>tampilkanLayar("layarBeranda");
+  pilih("btnMasukGuru").onclick=masukGuru;
+  pilih("inputKunciGuru").onkeydown=e=>{if(e.key==="Enter")masukGuru()};
+  pilih("btnHapusLevel").onclick=hapusNilaiLevel;
+  pilih("btnHapusSemua").onclick=hapusSemuaNilai;
+  pilih("btnUploadExcel").onclick=()=>{if(cekAksesGuru())pilih("inputExcel").click()};
+  pilih("inputExcel").onchange=e=>prosesUploadExcel(e.target.files?.[0]);
+  document.querySelectorAll(".lb-tab").forEach(t=>t.onclick=()=>{if(!cekAksesGuru())return;const lv=t.dataset.level;aturTabLeaderboard(lv);muatLeaderboard(lv)});
+}
+
+function initQUANTA(){
+  if(window.__QUANTA_INITIALIZED) return;
+  window.__QUANTA_INITIALIZED = true;
+  try{
+    inisialisasiFirebase();
+    ikatEvent();
+    console.log("[QUANTA] Mode Tantangan siap.");
+  }catch(err){
+    console.error("[QUANTA] Gagal menginisialisasi halaman:",err);
+    // Pastikan kegagalan salah satu komponen tidak membuat seluruh tombol mati.
+    try{ pasangFallbackNavigasi(); }catch(e){ console.error(e); }
+  }
+}
+function pasangFallbackNavigasi(){
+  const map={
+    btnKeCara:"layarCara", btnKeDaftar:"layarDaftar", btnDariBeranda:"layarBeranda",
+    btnMulaiDariCara:"layarDaftar", btnDariDaftar:"layarBeranda", btnDariLevel:"layarDaftar",
+    btnDariLeaderboard:"layarBeranda", btnDariGuruLogin:"layarBeranda", btnBatalGuru:"layarBeranda"
+  };
+  Object.entries(map).forEach(([btn,screen])=>{
+    const el=pilih(btn); if(el) el.addEventListener("click",()=>tampilkanLayar(screen));
+  });
+  const start=pilih("btnKeLevel");
+  if(start) start.addEventListener("click",()=>{
+    const nama=(pilih("inputNama")?.value||"").trim();
+    if(!nama){ tampilkan("pesanNama"); pilih("pesanNama").textContent="Nama tidak boleh kosong."; return; }
+    state.nama=nama; tampilkanLayar("layarLevel");
+  });
+  document.querySelectorAll(".level-card").forEach(btn=>btn.addEventListener("click",()=>mulaiPermainan(btn.dataset.level)));
+}
+if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",initQUANTA,{once:true});
+else initQUANTA();
+
+</script>
+</body></html>
