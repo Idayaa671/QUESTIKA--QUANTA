@@ -4,13 +4,15 @@
     ".write": false,
     "tantangan": {
       "leaderboard": {
+        ".write": "!newData.exists()",
         "$level": {
           ".read": true,
+          ".write": "!newData.exists()",
           ".indexOn": ["poin"],
           "$id": {
-            ".write": "!data.exists()",
+            ".write": "!data.exists() || !newData.exists()",
             ".validate": "newData.hasChildren(['nama','poin','benar','total','durasi','nilai','timestamp'])",
-            "nama":       { ".validate": "newData.isString() && newData.val().length >= 1 && newData.val().length <= 30" },
+            "nama":       { ".validate": "newData.isString() && newData.val().length >= 1 && newData.val().length <= 60" },
             "poin":       { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1000" },
             "benar":      { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 100" },
             "total":      { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 100" },
