@@ -1,0 +1,29 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "tantangan": {
+      "leaderboard": {
+        "$level": {
+          ".read": true,
+          ".indexOn": ["poin"],
+          "$id": {
+            ".write": "!data.exists()",
+            ".validate": "newData.hasChildren(['nama','poin','benar','total','durasi','nilai','timestamp'])",
+            "nama":       { ".validate": "newData.isString() && newData.val().length >= 1 && newData.val().length <= 30" },
+            "poin":       { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1000" },
+            "benar":      { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 100" },
+            "total":      { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 100" },
+            "durasi":     { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 3600" },
+            "nilai":      { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 100" },
+            "waktuSisa":  { ".validate": "newData.isNumber()" },
+            "bonusWaktu": { ".validate": "newData.isNumber()" },
+            "timestamp":  { ".validate": "newData.isNumber()" },
+            "sumber":     { ".validate": "newData.isString()" },
+            "$other":     { ".validate": false }
+          }
+        }
+      }
+    }
+  }
+}
