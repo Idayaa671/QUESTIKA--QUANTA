@@ -1178,50 +1178,80 @@ function pesanErrorGuru(e) {
   const k = (e && (e.code || e.message)) || "";
   if (/permission/i.test(k))
     return "ditolak oleh Rules Firebase. Pastikan Rules terbaru (firebase-rules.json) sudah di-Publish di proyek questika-aa9f3.";
+  if (k === "timeout")
+    return "koneksi terputus atau terlalu lambat. Coba lagi.";
   return (e && e.message) || "tidak diketahui";
 }
-async function hapusNilaiLevel() {
-  if (!cekAksesGuru() || !db) return;
-  const level = state.lbLevel || "mudah";
-  if (
-    !confirm(
-      `Hapus SEMUA nilai leaderboard level ${LEVEL_CONFIG[level].label}? Data yang dihapus tidak dapat dikembalikan.`,
-    )
-  )
-    return;
-  try {
-    await db.ref(`tantangan/leaderboard/${level}`).remove();
+function konfirmasiHapus(idTombol, petunjuk) {
+  // Ketuk dua kali dalam 5 detik (tidak memakai confirm() yang bisa diblokir browser/WebView)
+  const t = pilih(idTombol);
+  if (t.dataset.menunggu === "1") {
+    clearTimeout(t._tmr);
+    t.dataset.menunggu = "0";
+    t.textContent = t.dataset.teksAsli;
+    return true;
+  }
+  t.dataset.teksAsli = t.textContent;
+  t.dataset.menunggu = "1";
+  t.textContent = "⚠️ Ketuk lagi untuk konfirmasi";
+  tampilkanStatusGuru(petunjuk, false);
+  t._tmr = setTimeout(() => {
+    t.dataset.menunggu = "0";
+    t.textContent = t.dataset.teksAsli;
+  }, 5000);
+  return false;
+}
+async function jalankanHapus(path, pesanSukses, setelah) {
+  if (!db) {
     tampilkanStatusGuru(
-      `✅ Semua nilai level ${LEVEL_CONFIG[level].label} berhasil dihapus.`,
+      "❌ Firebase belum terhubung di perangkat ini. Refresh halaman.",
+      false,
     );
-    muatLeaderboard(level);
+    return;
+  }
+  tampilkanStatusGuru("⏳ Menghapus…", true);
+  try {
+    await Promise.race([db.ref(path).remove(), tunggu(10000, "timeout")]);
+    tampilkanStatusGuru(pesanSukses);
+    setelah();
   } catch (e) {
     tampilkanStatusGuru(
-      `❌ Gagal menghapus nilai: ${pesanErrorGuru(e)}`,
+      `❌ Gagal menghapus: ${pesanErrorGuru(e)} (kode: ${(e && (e.code || e.message)) || "?"})`,
       false,
     );
   }
 }
-async function hapusSemuaNilai() {
-  if (!cekAksesGuru() || !db) return;
+async function hapusNilaiLevel() {
+  if (!cekAksesGuru()) return;
+  const level = state.lbLevel || "mudah";
+  const label = LEVEL_CONFIG[level].label;
   if (
-    !confirm(
-      "HAPUS SEMUA NILAI dari semua level Mudah, Sedang, dan Sulit? Tindakan ini tidak dapat dibatalkan.",
+    !konfirmasiHapus(
+      "btnHapusLevel",
+      `Ketuk tombol hapus sekali lagi dalam 5 detik untuk menghapus SEMUA nilai level ${label}. Data tidak dapat dikembalikan.`,
     )
   )
     return;
-  try {
-    await db.ref("tantangan/leaderboard").remove();
-    tampilkanStatusGuru(
-      "✅ Semua data leaderboard dari seluruh level berhasil dihapus.",
-    );
-    muatLeaderboard(state.lbLevel || "mudah");
-  } catch (e) {
-    tampilkanStatusGuru(
-      `❌ Gagal menghapus semua data: ${pesanErrorGuru(e)}`,
-      false,
-    );
-  }
+  await jalankanHapus(
+    `tantangan/leaderboard/${level}`,
+    `✅ Semua nilai level ${label} berhasil dihapus.`,
+    () => muatLeaderboard(level),
+  );
+}
+async function hapusSemuaNilai() {
+  if (!cekAksesGuru()) return;
+  if (
+    !konfirmasiHapus(
+      "btnHapusSemua",
+      "Ketuk tombol sekali lagi dalam 5 detik untuk menghapus SEMUA nilai di level Mudah, Sedang, dan Sulit. Tidak dapat dibatalkan.",
+    )
+  )
+    return;
+  await jalankanHapus(
+    "tantangan/leaderboard",
+    "✅ Semua data leaderboard dari seluruh level berhasil dihapus.",
+    () => muatLeaderboard(state.lbLevel || "mudah"),
+  );
 }
 function normalisasiHeaderExcel(v) {
   return String(v ?? "")
