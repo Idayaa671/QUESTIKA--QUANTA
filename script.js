@@ -888,7 +888,7 @@ function tampilkanSoal() {
       btn.type = "button";
       btn.className = "btn-pilihan";
       btn.dataset.idx = i;
-      btn.innerHTML = `<span class="option-letter">${String.fromCharCode(65 + i)}</span><span class="option-text"></span>`;
+      btn.innerHTML = `<span class="option-letter">${String.fromCharCode(65 + i)}.</span><span class="option-text"></span>`;
       btn.querySelector(".option-text").textContent = teksPilihan;
       if (state.jawaban[state.nomorSoal] === i) btn.classList.add("selected");
       btn.onclick = () => pilihMCQ(i);
@@ -1255,65 +1255,120 @@ async function hapusSemuaNilai() {
 }
 function normalisasiHeaderExcel(v) {
   return String(v ?? "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
-    .replace(/[ _-]/g, "")
-    .trim();
+    .replace(/[^a-z0-9]/g, "");
 }
 function angkaExcel(v, def = 0) {
-  if (v === null || v === undefined || v === "") return def;
-  const n = Number(String(v).replace(/,/g, "."));
-  return Number.isFinite(n) ? n : def;
+  if (v === null || v === undefined || String(v).trim() === "") return def;
+  if (typeof v === "number") return Number.isFinite(v) ? v : NaN;
+  const teks = String(v).trim().replace(/\s/g, "");
+  const normal = teks.includes(",") && !teks.includes(".")
+    ? teks.replace(",", ".")
+    : teks.replace(/,/g, "");
+  const n = Number(normal);
+  return Number.isFinite(n) ? n : NaN;
 }
 async function prosesUploadExcel(file) {
-  if (!cekAksesGuru() || !db || !file) return;
+  if (!file) return;
+  if (!cekAksesGuru() || !db) return;
   if (typeof XLSX === "undefined") {
     tampilkanStatusGuru(
       "❌ Library Excel belum termuat. Periksa koneksi internet lalu refresh halaman.",
       false,
     );
+    pilih("inputExcel").value = "";
     return;
   }
   try {
+    const ekstensi = file.name.split(".").pop().toLowerCase();
+    if (!["xlsx", "xls", "csv"].includes(ekstensi))
+      throw new Error("Pilih file Excel (.xlsx, .xls) atau CSV.");
     const buffer = await file.arrayBuffer();
-    const wb = XLSX.read(buffer, { type: "array" });
+    const wb = XLSX.read(buffer, { type: "array", cellDates: false });
+    if (!wb.SheetNames.length) throw new Error("File Excel tidak memiliki lembar data.");
     const ws = wb.Sheets[wb.SheetNames[0]];
-    const rows = XLSX.utils.sheet_to_json(ws, { defval: "" });
+    const rows = XLSX.utils.sheet_to_json(ws, { defval: "", raw: false });
     if (!rows.length) throw new Error("File Excel tidak memiliki data.");
     const level = state.lbLevel || "mudah";
     const cfg = LEVEL_CONFIG[level];
+    const alias = {
+      nama: ["nama", "namasiswa", "siswa", "name"],
+      poin: ["poin", "point", "score", "skor"],
+      benar: ["benar", "jawabanbenar", "correct"],
+      total: ["total", "jumlahsoal", "jumlah"],
+      durasi: ["durasi", "waktudetik", "waktu", "duration"],
+      nilai: ["nilai", "grade"],
+      bonuswaktu: ["bonuswaktu", "bonus", "timebonus"],
+    };
     const entries = {};
-    rows.forEach((row, i) => {
+    const errors = [];
+    rows.forEach((row, index) => {
       const map = {};
-      Object.keys(row).forEach(
-        (k) => (map[normalisasiHeaderExcel(k)] = row[k]),
-      );
-      const nama = String(map.nama || map.namasiswa || map.siswa || "").trim();
-      if (!nama) return;
-      const poin = angkaExcel(map.poin, 0);
-      const total = angkaExcel(map.total, cfg.jumlah);
-      const benar = angkaExcel(map.benar, 0);
-      const durasi = angkaExcel(map.durasi, 0);
-      const nilai = angkaExcel(map.nilai, 0);
-      const bonusWaktu = angkaExcel(map.bonuswaktu, 0);
+      Object.keys(row).forEach((key) => {
+        const header = normalisasiHeaderExcel(key);
+        const field = Object.keys(alias).find((name) => alias[name].includes(header));
+        if (field) map[field] = row[key];
+      });
+      const nama = String(map.nama ?? "").trim();
+      if (!nama) {
+        if (Object.values(row).some((value) => String(value).trim()))
+          errors.push(`baris ${index + 2}: nama kosong`);
+        return;
+      }
+      const data = {
+        poin: angkaExcel(map.poin),
+        benar: angkaExcel(map.benar),
+        total: angkaExcel(map.total, cfg.jumlah),
+        durasi: angkaExcel(map.durasi),
+        nilai: angkaExcel(map.nilai),
+        bonusWaktu: angkaExcel(map.bonuswaktu),
+      };
+      const fieldInvalid = Object.entries(data).find(([, value]) => !Number.isFinite(value) || value < 0);
+      if (fieldInvalid) {
+        errors.push(`baris ${index + 2}: nilai ${fieldInvalid[0]} harus berupa angka 0 atau lebih`);
+        return;
+      }
       const key = db.ref(`tantangan/leaderboard/${level}`).push().key;
       entries[key] = {
-        nama,
-        poin,
-        benar,
-        total,
-        durasi,
-        nilai,
-        bonusWaktu,
+        nama: nama.slice(0, 60),
+        ...data,
         timestamp: Date.now(),
         sumber: "excel",
       };
     });
     const count = Object.keys(entries).length;
     if (!count)
-      throw new Error("Tidak ada baris valid. Pastikan ada kolom Nama.");
-    await db.ref(`tantangan/leaderboard/${level}`).update(entries);
+      throw new Error("Tidak ada baris valid. Pastikan baris pertama berisi kolom Nama dan angka pada kolom nilai.");
+    // Rules Firebase memberi izin tulis pada tiap ID entri, bukan update massal di level.
+    const pairs = Object.entries(entries);
+    let uploaded = 0;
+    const writeErrors = [];
+    for (let offset = 0; offset < pairs.length; offset += 20) {
+      const batch = pairs.slice(offset, offset + 20);
+      const results = await Promise.allSettled(
+        batch.map(([key, entry]) =>
+          db.ref(`tantangan/leaderboard/${level}/${key}`).set(entry),
+        ),
+      );
+      results.forEach((result) => {
+        if (result.status === "fulfilled") uploaded++;
+        else writeErrors.push(result.reason);
+      });
+    }
+    if (!uploaded) {
+      const firstError = writeErrors[0];
+      throw new Error(
+        `Tidak ada data yang tersimpan. ${pesanErrorGuru(firstError)}${firstError?.code ? ` (kode: ${firstError.code})` : ""}`,
+      );
+    }
+    const detailError = errors.length
+      ? ` ${errors.length} baris dilewati (${errors.slice(0, 3).join("; ")}${errors.length > 3 ? "; …" : ""}).`
+      : "";
     tampilkanStatusGuru(
-      `✅ ${count} data berhasil di-upload ke leaderboard level ${cfg.label}.`,
+      `✅ ${uploaded} dari ${count} data berhasil di-upload ke leaderboard level ${cfg.label}.${detailError}${writeErrors.length ? ` ${writeErrors.length} data gagal disimpan (${pesanErrorGuru(writeErrors[0])}).` : ""}`,
+      true,
     );
     muatLeaderboard(level);
   } catch (e) {
