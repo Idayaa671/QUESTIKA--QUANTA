@@ -382,22 +382,11 @@
               🗑️ Hapus Nilai Level Ini</button
             ><button id="btnHapusSemua" class="btn-danger">
               ⚠️ Hapus Semua Nilai</button
-            ><button id="btnUploadExcel" class="btn-excel">
-              📥 Upload Excel
+            ><button id="btnUnduhExcel" class="btn-excel">
+              📥 Unduh Excel
             </button>
           </div>
-          <input
-            id="inputExcel"
-            type="file"
-            accept=".xlsx,.xls,.csv"
-            class="hidden"
-          />
-          <div class="lb-import-info">
-            Format kolom Excel yang disarankan:
-            <b>Nama, Poin, Benar, Total, Durasi, Nilai, Bonus Waktu</b>. Data
-            akan masuk ke level yang sedang dipilih. File tidak dikirim ke
-            server lain; isinya diproses di browser lalu disimpan ke Firebase.
-          </div>
+          <div class="lb-import-info">Unduh seluruh skor leaderboard level yang sedang dipilih dalam format Excel (.xlsx), lengkap dengan peringkat, nama, poin, jumlah benar, durasi, nilai, dan waktu.</div>
           <div id="pesanGuruDashboard" class="firebase-status hidden"></div>
         </div>
       </div>
